@@ -27,7 +27,7 @@ module.exports = {
   },
 
   // require those dependencies but don't bundle them
-  externals: [/^\@angular\//, /^rxjs\//, /^\@ngx-translate\//],
+  externals: [/^\@angular\//, /^rxjs\//],
   target: 'node',
 
   module: {

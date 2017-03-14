@@ -10,11 +10,10 @@ import { ModalDialogComponent } from './src/modal-dialog.component';
 import { ModalDialogService } from './src/modal-dialog.service';
 import { SimpleModalComponent } from './src/simple-modal.component';
 // modules
-import { TranslateModule } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 
 @NgModule({
-    imports: [ TranslateModule, CommonModule ],
+    imports: [ CommonModule ],
     declarations: [ ModalDialogComponent, SimpleModalComponent ],
     entryComponents: [ ModalDialogComponent, SimpleModalComponent ],
     exports: [ ModalDialogComponent, SimpleModalComponent ]

@@ -11,13 +11,13 @@ export interface IModalDialogOptions {
   onClose?: () => Promise<any> | Observable<any> | boolean;
   actionButtons?: IModalDialogButton[];
   data?: any;
-  settings: IModalDialogSettings
+  settings?: IModalDialogSettings;
 }
 
 export interface IModalDialogButton {
   text: string;
   buttonClass?: string;
-  onAction: () => Promise<any> | Observable<any> | boolean;
+  onAction?: () => Promise<any> | Observable<any> | boolean;
 }
 
 export interface IModalDialogSettings {

@@ -14,6 +14,7 @@ import {
   IModalDialogSettings
 } from './modal-dialog.interface';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/fromPromise';
 
 /**
  * Modal dialog component
@@ -29,7 +30,7 @@ import { Observable } from 'rxjs/Observable';
   template: `
     <div [ngClass]="settings.overlayClass" (click)="(!actionButtons || !actionButtons.length) && close()"></div>
     <div class="modal" [ngClass]="settings.modalClass">
-      <div class="modal-content" [ngClass]="{settings.alertClass: showAlert, settings.contentClass}">
+      <div class="modal-content" [ngClass]="[ showAlert ? settings.alertClass : '', settings.contentClass]">
         <div [ngClass]="settings.headerClass">
           <h4 class="modal-title">{{title}}</h4>
           <button (click)="close()" *ngIf="!prompt" type="button"
@@ -101,13 +102,13 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy {
     this._setOptions(options);
   }
 
-  doAction(action: () => Promise<any> | Observable<any> | boolean) {
+  doAction(action?: () => Promise<any> | Observable<any> | boolean) {
     // disable multi clicks
     if (this._inProgress) {
       return;
     }
     this._inProgress = true;
-    this._closeIfSuccessfull(action);
+    this._closeIfSuccessful(action);
   }
 
   /**
@@ -124,7 +125,7 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy {
     this._inProgress = true;
 
     if (this.onClose) {
-      this._closeIfSuccessfull(this.onClose);
+      this._closeIfSuccessful(this.onClose);
       return;
     }
     this.reference.destroy();
@@ -157,31 +158,42 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy {
     this.settings = null; // TODO: do something
   }
 
-  private _closeIfSuccessfull(callback: () => Promise<any> | Observable<any> | boolean) {
+  private _closeIfSuccessful(callback: () => Promise<any> | Observable<any> | boolean) {
+    if (!callback) {
+      return this._finalizeAndDestroy();
+    }
+
     let response = callback();
     if (typeof response === 'boolean') {
       if (response) {
-        this._inProgress = false;
-        this.reference.destroy();
+        return this._finalizeAndDestroy();
       }
-      return;
+      return this._triggerAlert();
     }
-    if (typeof response === 'Promise') {
+    if (response instanceof Promise) {
       response = Observable.fromPromise(<Promise<any>>response);
     }
     response.subscribe(() => {
-      this._inProgress = false;
-      this.reference.destroy();
+      this._finalizeAndDestroy();
     }, () => {
-      if (this.settings.notifyWithAlert) {
-        this.showAlert = true;
-        this._alertTimeout = window.setTimeout(() => {
-          this.showAlert = false;
-          this._inProgress = false;
-          clearTimeout(this._alertTimeout);
-          this._alertTimeout = null;
-        }, this.settings.alertDuration);
-      }
+      this._triggerAlert();
     });
+  }
+
+  private _finalizeAndDestroy() {
+    this._inProgress = false;
+    this.reference.destroy();
+  }
+
+  private _triggerAlert() {
+    if (this.settings.notifyWithAlert) {
+      this.showAlert = true;
+      this._alertTimeout = window.setTimeout(() => {
+        this.showAlert = false;
+        this._inProgress = false;
+        clearTimeout(this._alertTimeout);
+        this._alertTimeout = null;
+      }, this.settings.alertDuration);
+    }
   }
 }
