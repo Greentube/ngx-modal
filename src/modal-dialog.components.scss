@@ -1,0 +1,45 @@
+
+@-moz-keyframes shake {
+  from, to                { transform: translate3d(0, -50%, 0); }
+  10%, 30%, 50%, 70%, 90% { transform: translate3d(-2rem, -50%, 0); }
+  20%, 40%, 60%, 80%      { transform: translate3d(2rem, -50%, 0); }
+}
+@-webkit-keyframes shake {
+  from, to                { transform: translate3d(0, -50%, 0); }
+  10%, 30%, 50%, 70%, 90% { transform: translate3d(-2rem, -50%, 0); }
+  20%, 40%, 60%, 80%      { transform: translate3d(2rem, -50%, 0); }
+}
+@keyframes shake {
+  from, to                { transform: translate3d(0, -50%, 0); }
+  10%, 30%, 50%, 70%, 90% { transform: translate3d(-2rem, -50%, 0); }
+  20%, 40%, 60%, 80%      { transform: translate3d(2rem, -50%, 0); }
+}
+
+.modal {
+  display: block;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  backface-visibility: hidden;
+  overflow: visible;
+}
+.modal-content {
+  left: -50%;
+  transform: translateY(-50%);
+}
+.modal-content.shake {
+  backface-visibility: hidden;
+  -webkit-animation-duration: 0.5s;
+  -moz-animation-duration: 0.5s;
+  animation-duration: 0.5s;
+  -webkit-animation-fill-mode: both;
+  -moz-animation-fill-mode: both;
+  animation-fill-mode: both;
+  -webkit-animation-iteration-count: infinite;
+  -moz-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+  -webkit-animation-name: shake;
+  -moz-animation-name: shake;
+  animation-name: shake;
+}

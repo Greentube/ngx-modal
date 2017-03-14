@@ -1,0 +1,48 @@
+#################
+## Misc
+#################
+**/.DS_Store
+nbproject
+manifest.mf
+build.xml
+node_modules/*
+npm-debug.log
+*.js
+!config/*
+!karma.conf.js
+*.map
+*.d.ts
+!copy.js
+!webpack.config.js
+!examples/**/*.js
+coverage
+*.metadata.json
+/compiled
+
+#################
+## IDEs
+#################
+.idea
+.project
+.settings
+.vscode
+
+############
+## Windows
+############
+
+# Windows image file caches
+Thumbs.db
+
+# Folder config file
+Desktop.ini
+
+############
+## Mac
+############
+
+# Mac crap
+.DS_Store
+
+bundles/
+node_modules/

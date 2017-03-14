@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "module": "es2015",
+    "target": "es5",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "declaration": true,
+    "moduleResolution": "node",
+    "noUnusedLocals": true,
+    "types": [
+      "hammerjs",
+      "jasmine",
+      "node"
+    ],
+    "lib": ["es2015", "dom"]
+  },
+  "files": [
+    "index.ts",
+    "./src/modal-dialog.component.ts",
+    "./src/modal-dialog.service.ts",
+    "./src/modal-dialog.interface.ts",
+    "./src/simple-modal.component.ts",
+    "./tests/modal-dialog.service.spec.ts",
+    "./tests/modal-dialog.component.spec.ts",
+    "./tests/simple-modal.component.spec.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "bundles"
+  ],
+  "angularCompilerOptions": {
+    "strictMetadataEmit": true,
+    "skipTemplateCodegen": true
+  }
+}
