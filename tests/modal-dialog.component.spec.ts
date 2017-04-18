@@ -37,7 +37,13 @@ describe('ModalDialog.Component:', () => {
     module.overrideModule(BrowserDynamicTestingModule, {
       set: { entryComponents: [DummyComponent] }
     });
+    // module.compileComponents().then(() => {
+    //
+    //   done();
+    // });
+
     fixture = module.createComponent(ModalDialogComponent);
+    component = fixture.componentInstance;
   });
 
   let sampleText: string;
@@ -54,20 +60,13 @@ describe('ModalDialog.Component:', () => {
       })
     };
     actionButtons = [
-      {
-        text: 'abc', onAction: () => Observable.of(true).toPromise()
-      },
-      {
-        text: 'def', onAction: () => true
-      },
-      {
-        text: 'hgi', onAction: () => Observable.of(true)
-      }
+      { text: 'abc', onAction: () => Observable.of(true).toPromise() },
+      { text: 'def', onAction: () => true },
+      { text: 'hgi', onAction: () => Observable.of(true) }
     ];
   });
 
   it('should initialize component and define dialogInit method', () => {
-    component = fixture.componentInstance;
     expect(component.dialogInit).toBeDefined('should define dialogInit method');
   });
 
@@ -78,7 +77,6 @@ describe('ModalDialog.Component:', () => {
     });
     let data = { some: 'data' };
 
-    component = fixture.componentInstance;
     component.dialogInit(fixture.componentRef, {
       title: sampleText,
       onClose: onClose,
@@ -92,7 +90,6 @@ describe('ModalDialog.Component:', () => {
   });
 
   it('should set default values if no options passed', () => {
-    component = fixture.componentInstance;
     component.dialogInit(fixture.componentRef);
 
     // TODO: Fix those
@@ -103,7 +100,6 @@ describe('ModalDialog.Component:', () => {
   });
 
   it('should throw exception if both onClose and prompt are set', () => {
-    component = fixture.componentInstance;
     function testFunction() {
       component.dialogInit(fixture.componentRef, {
         title: sampleText,
@@ -114,39 +110,37 @@ describe('ModalDialog.Component:', () => {
     }
 
     // act + assert
-    expect(testFunction).toThrowError(/OnClose and Prompt/);
+    expect(testFunction).toThrowError(/OnClose callback and ActionButtons/);
 
     component.close();
   });
 
   it('should call onPromptOk callback on button click and remove component reference after',
     fakeAsync(() => {
-      component = fixture.componentInstance;
       component.dialogInit(fixture.componentRef, {
         title: sampleText,
         actionButtons: actionButtons,
         data: data
       });
       // pre-check
-      spyOn(actionButtons[0], 'doAction').and.callThrough();
+      spyOn(actionButtons[0], 'onAction').and.callThrough();
       spyOn(fixture.componentRef, 'destroy').and.callThrough();
       // act
-      component.doAction(actionButtons[0].doAction);
+      component.doAction(actionButtons[0].onAction);
       // assert
-      expect(actionButtons[0].doAction).toHaveBeenCalled();
+      expect(actionButtons[0].onAction).toHaveBeenCalled();
       tick();
       expect(fixture.componentRef.destroy).toHaveBeenCalled();
     })
   );
 
   it('should not remove component if onAction fails and show alert', fakeAsync(() => {
-    component = fixture.componentInstance;
     component.dialogInit(fixture.componentRef, {
       title: sampleText,
       actionButtons: actionButtons,
       data: data
     });
-    actionButtons[0].doAction = () => new Promise<string>((resolve: any, reject: any) => {
+    actionButtons[0].onAction = () => new Promise<string>((resolve: any, reject: any) => {
       reject();
     });
     fixture.detectChanges();
@@ -154,7 +148,7 @@ describe('ModalDialog.Component:', () => {
     // pre-check
     spyOn(fixture.componentRef, 'destroy').and.callThrough();
     // act
-    component.doAction(actionButtons[0].doAction);
+    component.doAction(actionButtons[0].onAction);
     // assert
     tick();
     fixture.detectChanges();
@@ -168,27 +162,25 @@ describe('ModalDialog.Component:', () => {
 
   it('should call onAction callback only once',
     fakeAsync(() => {
-      component = fixture.componentInstance;
       component.dialogInit(fixture.componentRef, {
         title: sampleText,
         actionButtons: actionButtons,
         data: data
       });
       // pre-check
-      spyOn(actionButtons[0], 'doAction').and.callThrough();
+      spyOn(actionButtons[0], 'onAction').and.callThrough();
       spyOn(fixture.componentRef, 'destroy').and.callThrough();
       // act
-      component.doAction(actionButtons[0].doAction);
-      component.doAction(actionButtons[0].doAction);
+      component.doAction(actionButtons[0].onAction);
+      component.doAction(actionButtons[0].onAction);
       // assert
-      expect(actionButtons[0].doAction.calls.count()).toEqual(1);
+      expect(actionButtons[0].onAction.calls.count()).toEqual(1);
       tick();
     })
   );
 
   it('should remove component reference on accept button even if no prompt defined',
     fakeAsync(() => {
-      component = fixture.componentInstance;
       component.dialogInit(fixture.componentRef, {
         title: sampleText,
         data: data
@@ -196,7 +188,7 @@ describe('ModalDialog.Component:', () => {
       // pre-check
       spyOn(fixture.componentRef, 'destroy').and.callThrough();
       // act
-      component.doAction(actionButtons[0].doAction);
+      component.doAction(actionButtons[0].onAction);
       // assert
       tick();
       expect(fixture.componentRef.destroy).toHaveBeenCalled();
@@ -204,7 +196,6 @@ describe('ModalDialog.Component:', () => {
   );
 
   it('should remove component reference on doAction even if no callback defined', fakeAsync(() => {
-    component = fixture.componentInstance;
     component.dialogInit(fixture.componentRef, {
       title: sampleText,
       data: data
@@ -218,28 +209,8 @@ describe('ModalDialog.Component:', () => {
     expect(fixture.componentRef.destroy).toHaveBeenCalled();
   }));
 
-  it('should call onClose callback on close button if onPromptCancel not defined',
-    fakeAsync(() => {
-      component = fixture.componentInstance;
-      let input = {
-        title: sampleText,
-        onClose: onCloseWrapper.onClose,
-        data: data
-      };
-      component.dialogInit(fixture.componentRef, input);
-      // pre-check
-      spyOn(onCloseWrapper, 'onClose').and.callThrough();
-      // act
-      component.close();
-      // assert
-      tick();
-      expect(onCloseWrapper.onClose).toHaveBeenCalled();
-    })
-  );
-
   it('should remove reference on close button',
     fakeAsync(() => {
-      component = fixture.componentInstance;
       component.dialogInit(fixture.componentRef, {
         title: sampleText,
         data: data
@@ -261,7 +232,6 @@ describe('ModalDialog.Component:', () => {
 
   it('should inject new component', fakeAsync(() => {
     let testString = 'some data';
-    let component = fixture.componentInstance;
 
     component.dialogInit(fixture.componentRef, {
       childComponent: DummyComponent,

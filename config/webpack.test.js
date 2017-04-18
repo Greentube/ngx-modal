@@ -23,38 +23,43 @@ module.exports = {
   },
 
   module: {
-    rules: [{
-      enforce: 'pre',
-      test: /\.ts$/,
-      loader: 'tslint-loader',
-      exclude: [helpers.root('node_modules')]
-    }, {
-      enforce: 'pre',
-      test: /\.js$/,
-      loader: 'source-map-loader',
-      exclude: [
-        // these packages have problems with their sourcemaps
-        helpers.root('node_modules/rxjs'),
-        helpers.root('node_modules/@angular')
-      ]
-    }, {
-      test: /\.ts$/,
-      loader: 'awesome-typescript-loader',
-      query: {
-        // use inline sourcemaps for "karma-remap-coverage" reporter
-        sourceMap: false,
-        inlineSourceMap: true,
-        module: "commonjs",
-        removeComments: true
+    rules: [
+      {
+        enforce: 'pre',
+        test: /\.ts$/,
+        loader: 'tslint-loader',
+        exclude: [helpers.root('node_modules')]
       },
-      exclude: [/\.e2e\.ts$/]
-    }, {
-      enforce: 'post',
-      test: /\.(js|ts)$/,
-      loader: 'istanbul-instrumenter-loader',
-      include: helpers.root('src'),
-      exclude: [/\.spec\.ts$/, /\.e2e\.ts$/, /node_modules/]
-    }],
+      {
+        enforce: 'pre',
+        test: /\.js$/,
+        loader: 'source-map-loader',
+        exclude: [
+          // these packages have problems with their sourcemaps
+          helpers.root('node_modules/rxjs'),
+          helpers.root('node_modules/@angular')
+        ]
+      },
+      {
+        test: /\.ts$/,
+        loader: 'awesome-typescript-loader',
+        query: {
+          // use inline sourcemaps for "karma-remap-coverage" reporter
+          sourceMap: false,
+          inlineSourceMap: true,
+          module: "commonjs",
+          removeComments: true
+        },
+        exclude: [/\.e2e\.ts$/]
+      },
+      {
+        enforce: 'post',
+        test: /\.(js|ts)$/,
+        loader: 'istanbul-instrumenter-loader',
+        include: helpers.root('src'),
+        exclude: [/\.spec\.ts$/, /\.e2e\.ts$/, /node_modules/]
+      }
+    ]
   },
 
   plugins: [

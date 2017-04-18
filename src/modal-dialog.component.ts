@@ -25,17 +25,16 @@ import 'rxjs/add/observable/fromPromise';
  */
 @Component({
   selector: 'modal-dialog',
-  styleUrls: ['./modal-dialog.component.scss'],
   encapsulation: ViewEncapsulation.None,
   template: `
     <div [ngClass]="settings.overlayClass" (click)="(!actionButtons || !actionButtons.length) && close()"></div>
-    <div class="modal" [ngClass]="settings.modalClass">
-      <div class="modal-content" [ngClass]="[ showAlert ? settings.alertClass : '', settings.contentClass]">
+    <div [ngClass]="settings.modalClass">
+      <div [ngClass]="[ showAlert ? settings.alertClass : '', settings.contentClass]">
         <div [ngClass]="settings.headerClass">
-          <h4 class="modal-title">{{title}}</h4>
+          <h4 [ngClass]="settings.headerTitleClass">{{title}}</h4>
           <button (click)="close()" *ngIf="!prompt" type="button"
-            [title]="'CLOSE'"
-            class="close theme-icon-close">
+            [title]="settings.closeButtonTitle"
+            [ngClass]="settings.closeButtonClass">
           </button>
         </div>
         <div [ngClass]="settings.bodyClass">
@@ -47,7 +46,55 @@ import 'rxjs/add/observable/fromPromise';
         </div>
       </div>
     </div>
+    `,
+  host: {
+    style: `
+      @-moz-keyframes shake {
+        from, to                { transform: translate3d(0, -50%, 0); }
+        10%, 30%, 50%, 70%, 90% { transform: translate3d(-2rem, -50%, 0); }
+        20%, 40%, 60%, 80%      { transform: translate3d(2rem, -50%, 0); }
+      }
+      @-webkit-keyframes shake {
+        from, to                { transform: translate3d(0, -50%, 0); }
+        10%, 30%, 50%, 70%, 90% { transform: translate3d(-2rem, -50%, 0); }
+        20%, 40%, 60%, 80%      { transform: translate3d(2rem, -50%, 0); }
+      }
+      @keyframes shake {
+        from, to                { transform: translate3d(0, -50%, 0); }
+        10%, 30%, 50%, 70%, 90% { transform: translate3d(-2rem, -50%, 0); }
+        20%, 40%, 60%, 80%      { transform: translate3d(2rem, -50%, 0); }
+      }
+      
+      .modal {
+        display: block;
+        top: 50%;
+        left: 50%;
+        right: auto;
+        bottom: auto;
+        backface-visibility: hidden;
+        overflow: visible;
+      }
+      .modal-content {
+        left: -50%;
+        transform: translateY(-50%);
+      }
+      .modal-content.shake {
+        backface-visibility: hidden;
+        -webkit-animation-duration: 0.5s;
+        -moz-animation-duration: 0.5s;
+        animation-duration: 0.5s;
+        -webkit-animation-fill-mode: both;
+        -moz-animation-fill-mode: both;
+        animation-fill-mode: both;
+        -webkit-animation-iteration-count: infinite;
+        -moz-animation-iteration-count: infinite;
+        animation-iteration-count: infinite;
+        -webkit-animation-name: shake;
+        -moz-animation-name: shake;
+        animation-name: shake;
+      }    
     `
+  }
 })
 export class ModalDialogComponent implements IModalDialog, OnDestroy {
   @ViewChild('modalDialogBody', { read: ViewContainerRef })
@@ -57,9 +104,12 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy {
   /** Modal dialog style settings */
   protected settings: IModalDialogSettings = {
     overlayClass: 'modal-backdrop fade show',
-    modalClass: 'fade show',
-    contentClass: '',
+    modalClass: 'fade show modal',
+    contentClass: 'modal-content',
     headerClass: 'modal-header',
+    headerTitleClass: 'modal-title',
+    closeButtonClass: 'close glyphicon glyphicon-remove',
+    closeButtonTitle: 'CLOSE',
     bodyClass: 'modal-body',
     footerClass: 'modal-footer',
     alertClass: 'shake',
@@ -152,10 +202,12 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy {
       throw new Error(`OnClose callback and ActionButtons are not allowed to be defined on the same dialog.`);
     }
     // set references
-    this.title = options.title || '';
-    this.onClose = options.onClose || null;
-    this.actionButtons = options.actionButtons || null;
-    this.settings = null; // TODO: do something
+    this.title = (options && options.title) || '';
+    this.onClose = (options && options.onClose) || null;
+    this.actionButtons = (options && options.actionButtons) || null;
+    if (options && options.settings) {
+      Object.assign(this.settings, options.settings);
+    }
   }
 
   private _closeIfSuccessful(callback: () => Promise<any> | Observable<any> | boolean) {

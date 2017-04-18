@@ -113,6 +113,9 @@ interface IModalDialogSettings {
   modalClass?: string;
   contentClass?: string;
   headerClass?: string;
+  headerTitleClass?: string;
+  closeButtonClass?: string;
+  closeButtonTitle?: string;
   bodyClass?: string;
   footerClass?: string;
   alertClass?: string;

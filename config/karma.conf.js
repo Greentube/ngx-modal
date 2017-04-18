@@ -1,5 +1,6 @@
+var testWebpackConfig = require('./webpack.test.js');
+
 module.exports = function (config) {
-  var testWebpackConfig = require('./webpack.test.js');
 
   var configuration = {
     basePath: '',
@@ -20,6 +21,12 @@ module.exports = function (config) {
 
     // Webpack Config at ./webpack.test.js
     webpack: testWebpackConfig,
+
+    webpackMiddleware: {
+      // webpack-dev-middleware configuration
+      // i. e.
+      stats: 'errors-only'
+    },
 
     reporters: ['mocha', 'coverage', 'remap-coverage'],
 

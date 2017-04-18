@@ -31,19 +31,20 @@ module.exports = {
   target: 'node',
 
   module: {
-    rules: [{
-      enforce: 'pre',
-      test: /\.ts$/,
-      loader: 'tslint-loader',
-      exclude: [helpers.root('node_modules')]
-    }, {
-      test: /\.ts$/,
-      loader: 'awesome-typescript-loader',
-      options: {
-        declaration: false
-      },
-      exclude: [/\.spec\.ts$/]
-    }]
+    rules: [
+      {
+        enforce: 'pre',
+        test: /\.ts$/,
+        loader: 'tslint-loader',
+        exclude: [helpers.root('node_modules')]
+      }, {
+        test: /\.ts$/,
+        loader: 'awesome-typescript-loader',
+        options: {
+          declaration: false
+        },
+        exclude: [/\.spec\.ts$/]
+      }]
   },
 
   plugins: [
