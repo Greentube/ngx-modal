@@ -16,9 +16,8 @@
 
 ## Installation
 
-**SOON!**
 ```
-npm install --save @greentube/ngx-modal
+npm install --save ngx-modal-dialog
 ```
 ## How it works
 Modal dialog uses `ComponentFactoryResolver` to inject the given child component to the dialog.
