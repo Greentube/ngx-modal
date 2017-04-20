@@ -21,13 +21,13 @@
 npm install --save @greentube/ngx-modal
 ```
 ## How it works
-Modal dialog uses `ComponentFactoryResolver` to inject new child component wrapped in modal dialog to parent component.
-[ModalDialogService](#modaldialogservice) makes sure that only one instance of modal dialog is opened at a time.
-[IModalDialogOptions](#imodaldialogoptions) give you possibility to defined which child component will be rendered inside the wrapper and configure it based on your needs. 
+Modal dialog uses `ComponentFactoryResolver` to inject the given child component to the dialog.
+[ModalDialogService](#modaldialogservice) makes sure that only one instance of a modal dialog is opened at a time.
+With [IModalDialogOptions](#imodaldialogoptions) you can define which component will be rendered inside the dialog and configure it based on your needs. 
 
 ## Usage
 
-1. Include the `ngx-modal` module in your application at any place. Recommended is to add `forRoot` initialization in main app module.
+1. Include the `ngx-modal` module in your application at any place. The recommended way is to add `forRoot` initialization in the main app module.
 ```ts
 import { BrowserModule } from '@angular/platform-browser';
 import { ModalDialogModule } from '@greentube/ngx-modal';
@@ -41,9 +41,9 @@ import { ModalDialogModule } from '@greentube/ngx-modal';
 })
 export class AppModule { }
 ```
-2. Create custom component that implements `IModalDialog` or use `SimpleModalDialog` as a child component.
+2. Create a custom component that implements `IModalDialog` or use the `SimpleModalDialog` as a child component.
  
-3. Open modal dialog by using `ModalDialogService` and passing parent `ViewContainerRef` and `IModalDialogOptions`:
+3. Inject the `ModalDialogService` where you want to open the dialog. Call `openDialog` passing parent `ViewContainerRef` and `IModalDialogOptions`:
 ```ts
 constructor(modalService: ModalDialogService, viewRef: ViewContainerRef) { }
     
@@ -58,7 +58,7 @@ openNewDialog() {
 
 ### ModalDialogService
 #### Methods:
-- `openDialog(target: ViewContainerRef, dialogOptions?: IModalDialogOptions)`: Closes existing and opens new modal dialog according to IModalDialogOptions.
+- `openDialog(target: ViewContainerRef, dialogOptions?: IModalDialogOptions)`: Closes existing and opens a new modal dialog according to IModalDialogOptions.
 
 ### IModalDialog
 Every component that is used as modal dialog must implement `IModalDialog`.
