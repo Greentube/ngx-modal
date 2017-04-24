@@ -115,7 +115,7 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy {
     alertClass: 'shake',
     alertDuration: 250,
     notifyWithAlert: true,
-    buttonsClass: 'btn btn-primary'
+    buttonClass: 'btn btn-primary'
   };
   protected actionButtons: IModalDialogButton[];
   protected title: string;

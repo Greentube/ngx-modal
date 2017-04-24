@@ -33,7 +33,7 @@ export interface IModalDialogSettings {
   footerClass?: string;
   alertClass?: string;
   alertDuration?: number;
-  buttonsClass?: string;
+  buttonClass?: string;
   notifyWithAlert?: boolean;
 }
 
