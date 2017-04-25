@@ -13,7 +13,7 @@ module.exports = {
   devtool: '#source-map',
 
   resolve: {
-    extensions: ['.ts', '.js']
+    extensions: ['.ts', '.js', '.css', '.scss', '.html']
   },
 
   entry: helpers.root('index.ts'),
@@ -44,7 +44,8 @@ module.exports = {
           declaration: false
         },
         exclude: [/\.spec\.ts$/]
-      }]
+      }
+    ]
   },
 
   plugins: [

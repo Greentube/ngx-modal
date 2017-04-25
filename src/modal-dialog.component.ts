@@ -4,7 +4,6 @@
   ComponentFactoryResolver,
   ViewContainerRef,
   ViewChild,
-  ViewEncapsulation,
   OnDestroy
 } from '@angular/core';
 import {
@@ -25,30 +24,7 @@ import 'rxjs/add/observable/fromPromise';
  */
 @Component({
   selector: 'modal-dialog',
-  encapsulation: ViewEncapsulation.None,
-  template: `
-    <div [ngClass]="settings.overlayClass" (click)="(!actionButtons || !actionButtons.length) && close()"></div>
-    <div [ngClass]="settings.modalClass">
-      <div [ngClass]="[ showAlert ? settings.alertClass : '', settings.contentClass]">
-        <div [ngClass]="settings.headerClass">
-          <h4 [ngClass]="settings.headerTitleClass">{{title}}</h4>
-          <button (click)="close()" *ngIf="!prompt" type="button"
-            [title]="settings.closeButtonTitle"
-            [ngClass]="settings.closeButtonClass">
-          </button>
-        </div>
-        <div [ngClass]="settings.bodyClass">
-          <i #modalDialogBody></i>
-        </div>
-        <div [ngClass]="settings.footerClass" *ngIf="actionButtons && actionButtons.length">
-          <button *ngFor="let button of actionButtons" (click)="doAction(button.onAction)"
-            [ngClass]='button.buttonClass || settings.buttonClass'>{{button.text}}</button>
-        </div>
-      </div>
-    </div>
-    `,
-  host: {
-    style: `
+  styles : [`
       @-moz-keyframes shake {
         from, to                { transform: translate3d(0, -50%, 0); }
         10%, 30%, 50%, 70%, 90% { transform: translate3d(-2rem, -50%, 0); }
@@ -64,7 +40,7 @@ import 'rxjs/add/observable/fromPromise';
         10%, 30%, 50%, 70%, 90% { transform: translate3d(-2rem, -50%, 0); }
         20%, 40%, 60%, 80%      { transform: translate3d(2rem, -50%, 0); }
       }
-      
+
       .modal {
         display: block;
         top: 50%;
@@ -92,9 +68,29 @@ import 'rxjs/add/observable/fromPromise';
         -webkit-animation-name: shake;
         -moz-animation-name: shake;
         animation-name: shake;
-      }    
+      }
+  `],
+  template: `
+    <div [ngClass]="settings.overlayClass" (click)="(!actionButtons || !actionButtons.length) && close()"></div>
+    <div [ngClass]="settings.modalClass">
+      <div [ngClass]="[ showAlert ? settings.alertClass : '', settings.contentClass]">
+        <div [ngClass]="settings.headerClass">
+          <h4 [ngClass]="settings.headerTitleClass">{{title}}</h4>
+          <button (click)="close()" *ngIf="!prompt" type="button"
+            [title]="settings.closeButtonTitle"
+            [ngClass]="settings.closeButtonClass">
+          </button>
+        </div>
+        <div [ngClass]="settings.bodyClass">
+          <i #modalDialogBody></i>
+        </div>
+        <div [ngClass]="settings.footerClass" *ngIf="actionButtons && actionButtons.length">
+          <button *ngFor="let button of actionButtons" (click)="doAction(button.onAction)"
+            [ngClass]='button.buttonClass || settings.buttonClass'>{{button.text}}</button>
+        </div>
+      </div>
+    </div>
     `
-  }
 })
 export class ModalDialogComponent implements IModalDialog, OnDestroy {
   @ViewChild('modalDialogBody', { read: ViewContainerRef })
