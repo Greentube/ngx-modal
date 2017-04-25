@@ -76,7 +76,7 @@ import 'rxjs/add/observable/fromPromise';
       <div [ngClass]="[ showAlert ? settings.alertClass : '', settings.contentClass]">
         <div [ngClass]="settings.headerClass">
           <h4 [ngClass]="settings.headerTitleClass">{{title}}</h4>
-          <button (click)="close()" *ngIf="!prompt" type="button"
+          <button (click)="close()" *ngIf="!actionButtons || !actionButtons.length" type="button"
             [title]="settings.closeButtonTitle"
             [ngClass]="settings.closeButtonClass">
           </button>
@@ -148,7 +148,11 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy {
     this._setOptions(options);
   }
 
-  doAction(action?: () => Promise<any> | Observable<any> | boolean) {
+  /**
+   * Run action defined on action button
+   * @param action
+   */
+    doAction(action?: () => Promise<any> | Observable<any> | boolean) {
     // disable multi clicks
     if (this._inProgress) {
       return;
@@ -159,7 +163,7 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy {
 
   /**
    * Method to run on close
-   * if prompt or onCancel are defiend, it will run them before destroying component
+   * if action buttons are defined, it will not close
    */
   close() {
     if (this._inProgress) {
@@ -174,8 +178,7 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy {
       this._closeIfSuccessful(this.onClose);
       return;
     }
-    this.reference.destroy();
-    this._inProgress = false;
+    this._finalizeAndDestroy();
   }
 
   /**
@@ -206,7 +209,11 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy {
     }
   }
 
-  private _closeIfSuccessful(callback: () => Promise<any> | Observable<any> | boolean) {
+  /**
+   * Close if successfull
+   * @param callback
+   */
+    private _closeIfSuccessful(callback: () => Promise<any> | Observable<any> | boolean) {
     if (!callback) {
       return this._finalizeAndDestroy();
     }

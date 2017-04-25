@@ -26,11 +26,11 @@ npm install --save ngx-modal-dialog
 ## How it works
 Modal dialog uses `ComponentFactoryResolver` to inject the given child component to the dialog.
 [ModalDialogService](#modaldialogservice) makes sure that only one instance of a modal dialog is opened at a time.
-With [IModalDialogOptions](#imodaldialogoptions) you can define which component will be rendered inside the dialog and configure it based on your needs. 
+With [IModalDialogOptions](#imodaldialogoptions) you can define which component will be rendered inside the dialog and configure it based on your needs.
 
 ## Styles and visuals
 
-`Ngx-modal-dialog` is intended to be used with Bootstrap 4, however you can apply your custom styles from your desired UI framework by providing class names in [IModalDialogSettings](#imodaldialogsettings).   
+`Ngx-modal-dialog` is intended to be used with Bootstrap 4, however you can apply your custom styles from your desired UI framework by providing class names in [IModalDialogSettings](#imodaldialogsettings).
 
 ## Usage
 
@@ -49,16 +49,16 @@ import { ModalDialogModule } from '@greentube/ngx-modal';
 export class AppModule { }
 ```
 2. Create a custom component that implements `IModalDialog` or use the `SimpleModalDialog` as a child component.
- 
+
 3. Inject the `ModalDialogService` where you want to open the dialog. Call `openDialog` passing parent `ViewContainerRef` and `IModalDialogOptions`:
 ```ts
 constructor(modalService: ModalDialogService, viewRef: ViewContainerRef) { }
-    
+
 openNewDialog() {
   this.modalService.openDialog(this.viewRef, {
     title: 'Some modal title',
     childComponent: SimpleModalComponent
-  });    
+  });
 }
 ```
 ## API
@@ -73,7 +73,7 @@ Every component that is used as modal dialog must implement `IModalDialog`.
 - `dialogInit(reference: ComponentRef<IModalDialog>, options?: IModalDialogOptions) => void`: This method is called after initialization of child component. Purpose of the method is to pass necessary information from outer scope to child component.
 
 ### IModalDialogOptions
-#### Interface definition
+#### Interface
 ```ts
 interface IModalDialogOptions {
   title?: string;
@@ -84,9 +84,47 @@ interface IModalDialogOptions {
   settings?: IModalDialogSettings;
 }
 ```
+#### Properties
+##### title
+Mandatory: `false`  
+Default: -  
+Type: `string`  
+Modal heading text
+
+##### childComponent
+Mandatory: `false`  
+Default: -  
+Type: `any`  
+Component type that will be rendered as a content of modal dialog. Component must implement `IModalDialog` interface.
+
+##### onClose () => Promise<any> | Observable<any> | boolean
+Mandatory: `false`  
+Default: -  
+Type: `function`
+Input: -  
+ReturnType: `Promise<any>` or `Observable<any>` or `boolean`  
+Function to be called on close button click. In case of Promise and Observable, modal dialog will not close unless successful resolve happens. In case of boolean, modal dialog will close only if result is `truthful`.
+
+##### actionButtons
+Mandatory: `false`  
+Default: -  
+Type: `Array of IModalDialogButton`  
+Footer action buttons for control of modal dialog. See [IModalDialogButton](#imodaldialogbutton).
+
+##### data
+Mandatory: `false`  
+Default: -  
+Type: -  
+Arbitrary data that will be passed to child component via `dialogInit` method.
+
+##### settings
+Mandatory: `false`  
+Default: -  
+Type: `IModalDialogSettings`  
+Additional settings for granular configuration of modal dialog. See [IModalDialogSettings](#imodaldialogsettings).
 
 ### IModalDialogButton
-#### Interface definition
+#### Interface
 ```ts
 interface IModalDialogButton {
   text: string;
@@ -97,7 +135,7 @@ interface IModalDialogButton {
 #### Properties
 ##### text
 Mandatory: `true`  
-Default: -  
+Default: -   
 Type: `string`  
 Caption/text on the button
 ##### buttonClass
@@ -107,13 +145,14 @@ Type: `string`
 Class name of button
 ##### onAction
 Mandatory: `false`  
-Default: -    
+Default: -  
 Type: `function`  
+Input: -      
 ReturnType: `Promise<any> | Observable<any> | boolean`  
 Function to be called on button click. In case of Promise and Observable, modal dialog will not close unless successful resolve happens. In case of boolean, modal dialog will close only if result is `truthful`.
 
 ### IModalDialogSettings
-#### Interface definition
+#### Interface
 ```ts
 interface IModalDialogSettings {
   overlayClass?: string;
@@ -142,7 +181,7 @@ Style of the backdrop overlay layer
 Mandatory: `false`  
 Default: `modal fade show`  
 Type: `string`  
-Style of modal wrapper 
+Style of modal wrapper
 ##### contentClass
 Mandatory: `false`  
 Default: `modal-content`  
