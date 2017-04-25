@@ -28,6 +28,8 @@ Modal dialog uses `ComponentFactoryResolver` to inject the given child component
 [ModalDialogService](#modaldialogservice) makes sure that only one instance of a modal dialog is opened at a time.
 With [IModalDialogOptions](#imodaldialogoptions) you can define which component will be rendered inside the dialog and configure it based on your needs.
 
+You can further use action buttons to control modal dialog from external component or child component. If action performed on button click is successful, modal dialog will close. Otherwise it will alert user.
+
 ## Styles and visuals
 
 `Ngx-modal-dialog` is intended to be used with Bootstrap 4, however you can apply your custom styles from your desired UI framework by providing class names in [IModalDialogSettings](#imodaldialogsettings).
@@ -61,6 +63,26 @@ openNewDialog() {
   });
 }
 ```
+4. Arbitrary define `actionButtons` in modal dialog options or child component to control modal dialog.
+
+```ts
+class MyModalComponent implements IModalDialog {
+  actionButtons: IModalDialogButton[];
+  
+  constructor() {
+    this.actionButtons = [
+      { text: 'Close' }, // no special processing here
+      { text: 'I will always close', onAction: () => true },
+      { text: 'I never close', onAction: () => false }
+    ];
+  }
+  
+  dialogInit(reference: ComponentRef<IModalDialog>, options?: IModalDialogOptions) {
+    // no processing needed
+  }
+}
+``` 
+
 ## API
 
 ### ModalDialogService
@@ -70,10 +92,19 @@ openNewDialog() {
 ### IModalDialog
 Every component that is used as modal dialog must implement `IModalDialog`.
 #### Methods:
-- `dialogInit(reference: ComponentRef<IModalDialog>, options?: IModalDialogOptions) => void`: This method is called after initialization of child component. Purpose of the method is to pass necessary information from outer scope to child component.
+- `dialogInit(reference: ComponentRef<IModalDialog>, options?: IModalDialogOptions) => void`  
+Mandatory: `true`    
+Default: -    
+This method is called after initialization of child component. Purpose of the method is to pass necessary information from outer scope to child component.
+#### Properties:
+- `actionButtons`  
+Mandatory: `false`  
+Default: -  
+Type: `string`  
+Modal heading text
 
 ### IModalDialogOptions
-#### Interface
+#### Interface:
 ```ts
 interface IModalDialogOptions {
   title?: string;
@@ -84,47 +115,48 @@ interface IModalDialogOptions {
   settings?: IModalDialogSettings;
 }
 ```
-#### Properties
-##### title
+#### Properties:
+- `title`  
 Mandatory: `false`  
 Default: -  
 Type: `string`  
 Modal heading text
 
-##### childComponent
-Mandatory: `false`  
+- `childComponent`  
+Mandatory: `false`    
 Default: -  
 Type: `any`  
 Component type that will be rendered as a content of modal dialog. Component must implement `IModalDialog` interface.
 
-##### onClose () => Promise<any> | Observable<any> | boolean
-Mandatory: `false`  
+- `onClose()`  
+Mandatory: `false`    
 Default: -  
-Type: `function`
+Type: `function`  
 Input: -  
 ReturnType: `Promise<any>` or `Observable<any>` or `boolean`  
 Function to be called on close button click. In case of Promise and Observable, modal dialog will not close unless successful resolve happens. In case of boolean, modal dialog will close only if result is `truthful`.
 
-##### actionButtons
+- `actionButtons`  
 Mandatory: `false`  
 Default: -  
-Type: `Array of IModalDialogButton`  
+Type: `Array<IModalDialogButton>`  
 Footer action buttons for control of modal dialog. See [IModalDialogButton](#imodaldialogbutton).
+Action buttons defined in child component have priority over action buttons defined via options.
 
-##### data
+- `data`  
 Mandatory: `false`  
 Default: -  
 Type: -  
 Arbitrary data that will be passed to child component via `dialogInit` method.
 
-##### settings
+- `settings`  
 Mandatory: `false`  
 Default: -  
 Type: `IModalDialogSettings`  
 Additional settings for granular configuration of modal dialog. See [IModalDialogSettings](#imodaldialogsettings).
 
 ### IModalDialogButton
-#### Interface
+#### Interface:
 ```ts
 interface IModalDialogButton {
   text: string;
@@ -132,18 +164,18 @@ interface IModalDialogButton {
   onAction?: () => Promise<any> | Observable<any> | boolean;
 }
 ```
-#### Properties
-##### text
+#### Properties:
+- `text`   
 Mandatory: `true`  
 Default: -   
 Type: `string`  
 Caption/text on the button
-##### buttonClass
+- `buttonClass`  
 Mandatory: `false`  
 Default: `btn btn-primary`  
 Type: `string`  
 Class name of button
-##### onAction
+- `onAction()`  
 Mandatory: `false`  
 Default: -  
 Type: `function`  
@@ -171,68 +203,68 @@ interface IModalDialogSettings {
 }
 ```
 
-#### Properties
-##### overlayClass
+#### Properties:
+- `overlayClass`  
 Mandatory: `false`  
 Default: `modal-backdrop fade show`  
 Type: `string`  
 Style of the backdrop overlay layer
-##### modalClass
+- `modalClass`  
 Mandatory: `false`  
 Default: `modal fade show`  
 Type: `string`  
 Style of modal wrapper
-##### contentClass
+- `contentClass`  
 Mandatory: `false`  
 Default: `modal-content`  
 Type: `string`  
 Modal dialog inner content class
-##### headerClass
+- `headerClass`  
 Mandatory: `false`  
 Default: `modal-header`  
 Type: `string`  
 Modal dialog header class
-##### headerTitleClass
+- `headerTitleClass`  
 Mandatory: `false`  
 Default: `modal-title`  
 Type: `string`  
 Modal dialog header title class
-##### closeButtonClass
+- `closeButtonClass`  
 Mandatory: `false`  
 Default: `close glyphicon glyphicon-remove`  
 Type: `string`  
 Modal dialog header close button class
-##### closeButtonTitle
+- `closeButtonTitle`  
 Mandatory: `false`  
 Default: `CLOSE`  
 Type: `string`  
 Close button title
-##### bodyClass
+- `bodyClass`  
 Mandatory: `false`  
 Default: `modal-body`  
 Type: `string`  
 Modal dialog body class
-##### footerClass
+- `footerClass`  
 Mandatory: `false`  
 Default: `modal-footer`  
 Type: `string`  
 Modal dialog footer class
-##### alertClass
+- `alertClass`  
 Mandatory: `false`  
 Default: `shake`  
 Type: `string`  
 Style to be appended to dialog once alert happens
-##### alertDuration
+- `alertDuration`  
 Mandatory: `false`  
 Default: `250`  
 Type: `number`  
 Duration of alert animation
-##### buttonClass
+- `buttonClass`  
 Mandatory: `false`  
 Default: `btn btn-primary`  
 Type: `string`  
 Style of footer action buttons
-##### notifyWithAlert
+- `notifyWithAlert`  
 Mandatory: `false`  
 Default: `true`  
 Type: `boolean`  

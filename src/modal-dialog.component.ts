@@ -120,6 +120,7 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy {
 
   private _inProgress = false;
   private _alertTimeout: number;
+  private _childInstance: any;
 
   /**
    * CTOR
@@ -139,9 +140,9 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy {
     if (options && options.childComponent) {
       let factory = this.componentFactoryResolver.resolveComponentFactory(options.childComponent);
       let componentRef = this.dynamicComponentTarget.createComponent(factory) as ComponentRef<IModalDialog>;
-      let childInstance = componentRef.instance as IModalDialog;
-      childInstance['dialogInit'](componentRef, options);
+      this._childInstance = componentRef.instance as IModalDialog;
 
+      this._childInstance['dialogInit'](componentRef, options);
       (document.activeElement as HTMLElement).blur();
     }
     // set options
@@ -203,7 +204,8 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy {
     // set references
     this.title = (options && options.title) || '';
     this.onClose = (options && options.onClose) || null;
-    this.actionButtons = (options && options.actionButtons) || null;
+    this.actionButtons = (this._childInstance && this._childInstance['actionButtons']) ||
+      (options && options.actionButtons) || null;
     if (options && options.settings) {
       Object.assign(this.settings, options.settings);
     }
