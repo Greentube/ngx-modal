@@ -94,11 +94,11 @@ import 'rxjs/add/observable/fromPromise';
 })
 export class ModalDialogComponent implements IModalDialog, OnDestroy {
   @ViewChild('modalDialogBody', { read: ViewContainerRef })
-  protected dynamicComponentTarget: ViewContainerRef;
-  protected reference: ComponentRef<IModalDialog>;
+  public dynamicComponentTarget: ViewContainerRef;
+  public reference: ComponentRef<IModalDialog>;
 
   /** Modal dialog style settings */
-  protected settings: IModalDialogSettings = {
+  public settings: IModalDialogSettings = {
     overlayClass: 'modal-backdrop fade show',
     modalClass: 'fade show modal',
     contentClass: 'modal-content',
@@ -113,10 +113,10 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy {
     notifyWithAlert: true,
     buttonClass: 'btn btn-primary'
   };
-  protected actionButtons: IModalDialogButton[];
-  protected title: string;
-  protected onClose: () => Promise<any> | Observable<any> | boolean;
-  protected showAlert: boolean = false;
+  public actionButtons: IModalDialogButton[];
+  public title: string;
+  public onClose: () => Promise<any> | Observable<any> | boolean;
+  public showAlert: boolean = false;
 
   private _inProgress = false;
   private _alertTimeout: number;
