@@ -1,8 +1,9 @@
-﻿import { ComponentRef } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+﻿import {ComponentRef} from '@angular/core';
+import {Observable} from 'rxjs/Observable';
+import {Subject} from "rxjs/Subject";
 
 export interface IModalDialog {
-  dialogInit: (reference: ComponentRef<IModalDialog>, options?: IModalDialogOptions) => void ;
+  dialogInit: (reference: ComponentRef<IModalDialog>, options?: IModalDialogOptions) => void;
 }
 
 export interface IModalDialogOptions {
@@ -12,6 +13,7 @@ export interface IModalDialogOptions {
   actionButtons?: IModalDialogButton[];
   data?: any;
   settings?: IModalDialogSettings;
+  closeDialogEvent?: Subject<void>;
 }
 
 export interface IModalDialogButton {
