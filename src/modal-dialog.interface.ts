@@ -1,6 +1,6 @@
-﻿import {ComponentRef} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {Subject} from "rxjs/Subject";
+﻿import { ComponentRef } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 
 export interface IModalDialog {
   dialogInit: (reference: ComponentRef<IModalDialog>, options?: IModalDialogOptions) => void;

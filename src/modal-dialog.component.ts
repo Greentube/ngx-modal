@@ -12,9 +12,9 @@ import {
   IModalDialogButton,
   IModalDialogSettings
 } from './modal-dialog.interface';
-import {Observable} from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/fromPromise';
-import {Subject} from "rxjs/Subject";
+import { Subject } from 'rxjs/Subject';
 
 /**
  * Modal dialog component
@@ -87,14 +87,14 @@ import {Subject} from "rxjs/Subject";
         </div>
         <div [ngClass]="settings.footerClass" *ngIf="actionButtons && actionButtons.length">
           <button *ngFor="let button of actionButtons" (click)="doAction(button.onAction)"
-            [ngClass]='button.buttonClass || settings.buttonClass'>{{button.text}}</button>
+            [ngClass]="button.buttonClass || settings.buttonClass">{{button.text}}</button>
         </div>
       </div>
     </div>
     `
 })
 export class ModalDialogComponent implements IModalDialog, OnDestroy {
-  @ViewChild('modalDialogBody', {read: ViewContainerRef})
+  @ViewChild('modalDialogBody', { read: ViewContainerRef })
   public dynamicComponentTarget: ViewContainerRef;
   public reference: ComponentRef<IModalDialog>;
 
@@ -147,11 +147,8 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy {
       this._childInstance = componentRef.instance as IModalDialog;
 
       this._closeDialogEvent = new Subject<void>();
+      this._closeDialogEvent.subscribe(this._finalizeAndDestroy);
       options.closeDialogEvent = this._closeDialogEvent;
-
-      this._closeDialogEvent.subscribe({
-        next: () => this._finalizeAndDestroy()
-      });
 
       this._childInstance['dialogInit'](componentRef, options);
       (document.activeElement as HTMLElement).blur();
@@ -202,7 +199,7 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy {
       this._alertTimeout = null;
     }
 
-    if(this._closeDialogEvent) {
+    if (this._closeDialogEvent) {
       this._closeDialogEvent.unsubscribe();
     }
   }
@@ -220,7 +217,7 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy {
     this.title = (options && options.title) || '';
     this.onClose = (options && options.onClose) || null;
     this.actionButtons = (this._childInstance && this._childInstance['actionButtons']) ||
-        (options && options.actionButtons) || null;
+      (options && options.actionButtons) || null;
     if (options && options.settings) {
       Object.assign(this.settings, options.settings);
     }
