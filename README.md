@@ -115,7 +115,7 @@ interface IModalDialogOptions {
   actionButtons?: IModalDialogButton[];
   data?: any;
   settings?: IModalDialogSettings;
-  closeDialogEvent?: Subject<void>;
+  closeDialogSubject?: Subject<void>;
 }
 ```
 #### Interface details:
@@ -139,7 +139,7 @@ Arbitrary data that will be passed to child component via `dialogInit` method.
 - settings: `IModalDialogSettings`  
 Additional settings for granular configuration of modal dialog. See [IModalDialogSettings](#imodaldialogsettings).
 
-- closeDialogEvent:`Subject<void>`  
+- closeDialogSubject:`Subject<void>`  
 Custom modal closing subject. Can be used to manually trigger modal dialog close from within the child component. 
 
 ### IModalDialogButton

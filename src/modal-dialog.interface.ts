@@ -13,7 +13,7 @@ export interface IModalDialogOptions {
   actionButtons?: IModalDialogButton[];
   data?: any;
   settings?: IModalDialogSettings;
-  closeDialogEvent?: Subject<void>;
+  closeDialogSubject?: Subject<void>;
 }
 
 export interface IModalDialogButton {

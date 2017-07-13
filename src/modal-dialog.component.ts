@@ -123,7 +123,7 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy {
   private _alertTimeout: number;
   private _childInstance: any;
 
-  private _closeDialogEvent: Subject<void>;
+  private _closeDialog$: Subject<void>;
 
   /**
    * CTOR
@@ -146,9 +146,9 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy {
       let componentRef = this.dynamicComponentTarget.createComponent(factory) as ComponentRef<IModalDialog>;
       this._childInstance = componentRef.instance as IModalDialog;
 
-      this._closeDialogEvent = new Subject<void>();
-      this._closeDialogEvent.subscribe(this._finalizeAndDestroy);
-      options.closeDialogEvent = this._closeDialogEvent;
+      this._closeDialog$ = new Subject<void>();
+      this._closeDialog$.subscribe(this._finalizeAndDestroy);
+      options.closeDialogSubject = this._closeDialog$;
 
       this._childInstance['dialogInit'](componentRef, options);
       (document.activeElement as HTMLElement).blur();
@@ -199,8 +199,8 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy {
       this._alertTimeout = null;
     }
 
-    if (this._closeDialogEvent) {
-      this._closeDialogEvent.unsubscribe();
+    if (this._closeDialog$) {
+      this._closeDialog$.unsubscribe();
     }
   }
 
