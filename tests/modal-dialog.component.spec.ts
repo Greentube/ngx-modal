@@ -256,4 +256,52 @@ describe('ModalDialog.Component:', () => {
     expect(innerComponent).toBeDefined('modal dialog body should be defined');
     expect(innerComponent.innerHTML).toContain(testString);
   }));
+
+  it('should close dialog from child component', fakeAsync(() => {
+    let testString = 'some data';
+
+    component.dialogInit(fixture.componentRef, {
+      childComponent: DummyComponent,
+      data: testString
+    });
+
+    fixture.detectChanges();
+
+    const dummyDebugElem = fixture.debugElement.query(By.css('dummy'));
+    const dummyComponent = dummyDebugElem.injector.get(DummyComponent) as DummyComponent;
+
+    spyOn(fixture.componentRef, 'destroy').and.callThrough();
+    spyOn(dummyComponent, 'closeMe').and.callThrough();
+
+    // act
+    dummyComponent.closeMe();
+
+    // assert
+    expect(dummyComponent.closeMe).toHaveBeenCalled();
+    expect(fixture.componentRef.destroy).toHaveBeenCalled();
+  }));
+
+  it('should unsubscribe from subject when closing dialog from child component', fakeAsync(() => {
+    let testString = 'some data';
+
+    component.dialogInit(fixture.componentRef, {
+      childComponent: DummyComponent,
+      data: testString
+    });
+
+    fixture.detectChanges();
+
+    const dummyDebugElem = fixture.debugElement.query(By.css('dummy'));
+    const dummyComponent = dummyDebugElem.injector.get(DummyComponent) as DummyComponent;
+
+    spyOn(dummyComponent.closingSubject$, 'unsubscribe').and.callThrough();
+    spyOn(dummyComponent, 'closeMe').and.callThrough();
+
+    // act
+    dummyComponent.closeMe();
+
+    // assert
+    expect(dummyComponent.closeMe).toHaveBeenCalled();
+    expect(dummyComponent.closingSubject$.unsubscribe).toHaveBeenCalled();
+  }));
 });
