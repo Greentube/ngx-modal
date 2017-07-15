@@ -147,7 +147,10 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy {
       this._childInstance = componentRef.instance as IModalDialog;
 
       this._closeDialog$ = new Subject<void>();
-      this._closeDialog$.subscribe(this._finalizeAndDestroy);
+      this._closeDialog$.subscribe(_ => {
+        this._finalizeAndDestroy();
+      });
+
       options.closeDialogSubject = this._closeDialog$;
 
       this._childInstance['dialogInit'](componentRef, options);
