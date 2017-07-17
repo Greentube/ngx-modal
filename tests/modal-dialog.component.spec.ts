@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/toPromise';
+import { Subject } from 'rxjs/Subject';
 
 let fixture: ComponentFixture<ModalDialogComponent>;
 
@@ -17,14 +18,26 @@ let fixture: ComponentFixture<ModalDialogComponent>;
 })
 class DummyComponent implements IModalDialog {
   props: any;
+  closingSubject$: Subject<void>;
 
   dialogInit(reference: ComponentRef<IModalDialog>, options?: IModalDialogOptions) {
     this.props = options.data;
+    this.closingSubject$ = options.closeDialogSubject;
   };
+
+  closeMe() {
+    if (this.closingSubject$) {
+      this.closingSubject$.next();
+    }
+  }
 }
 
 describe('ModalDialog.Component:', () => {
   let component: ModalDialogComponent;
+  let sampleText: string;
+  let onCloseWrapper: any;
+  let data: any;
+  let actionButtons: any[];
 
   beforeEach(() => {
     jasmine.clock().uninstall();
@@ -46,11 +59,6 @@ describe('ModalDialog.Component:', () => {
     component = fixture.componentInstance;
   });
 
-  let sampleText: string;
-  let onCloseWrapper: any;
-  let data: any;
-  let actionButtons: any[];
-
   beforeEach(() => {
     sampleText = 'sample text';
     data = { some: 'data' };
@@ -71,11 +79,11 @@ describe('ModalDialog.Component:', () => {
   });
 
   it('should set methods from options and initialize component', () => {
-    let sampleText = 'sample text';
+    sampleText = 'sample text';
     let onClose = () => new Promise<string>((resolve: any) => {
       resolve();
     });
-    let data = { some: 'data' };
+    data = { some: 'data' };
 
     component.dialogInit(fixture.componentRef, {
       title: sampleText,
@@ -247,5 +255,53 @@ describe('ModalDialog.Component:', () => {
 
     expect(innerComponent).toBeDefined('modal dialog body should be defined');
     expect(innerComponent.innerHTML).toContain(testString);
+  }));
+
+  it('should close dialog from child component', fakeAsync(() => {
+    let testString = 'some data';
+
+    component.dialogInit(fixture.componentRef, {
+      childComponent: DummyComponent,
+      data: testString
+    });
+
+    fixture.detectChanges();
+
+    const dummyDebugElem = fixture.debugElement.query(By.css('dummy'));
+    const dummyComponent = dummyDebugElem.injector.get(DummyComponent) as DummyComponent;
+
+    spyOn(fixture.componentRef, 'destroy').and.callThrough();
+    spyOn(dummyComponent, 'closeMe').and.callThrough();
+
+    // act
+    dummyComponent.closeMe();
+
+    // assert
+    expect(dummyComponent.closeMe).toHaveBeenCalled();
+    expect(fixture.componentRef.destroy).toHaveBeenCalled();
+  }));
+
+  it('should unsubscribe from subject when closing dialog from child component', fakeAsync(() => {
+    let testString = 'some data';
+
+    component.dialogInit(fixture.componentRef, {
+      childComponent: DummyComponent,
+      data: testString
+    });
+
+    fixture.detectChanges();
+
+    const dummyDebugElem = fixture.debugElement.query(By.css('dummy'));
+    const dummyComponent = dummyDebugElem.injector.get(DummyComponent) as DummyComponent;
+
+    spyOn(dummyComponent.closingSubject$, 'unsubscribe').and.callThrough();
+    spyOn(dummyComponent, 'closeMe').and.callThrough();
+
+    // act
+    dummyComponent.closeMe();
+
+    // assert
+    expect(dummyComponent.closeMe).toHaveBeenCalled();
+    expect(dummyComponent.closingSubject$.unsubscribe).toHaveBeenCalled();
   }));
 });

@@ -14,6 +14,7 @@ import {
 } from './modal-dialog.interface';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/fromPromise';
+import { Subject } from 'rxjs/Subject';
 
 /**
  * Modal dialog component
@@ -24,7 +25,7 @@ import 'rxjs/add/observable/fromPromise';
  */
 @Component({
   selector: 'modal-dialog',
-  styles : [`
+  styles: [`
       @-moz-keyframes shake {
         from, to                { transform: translate3d(0, -50%, 0); }
         10%, 30%, 50%, 70%, 90% { transform: translate3d(-2rem, -50%, 0); }
@@ -86,7 +87,7 @@ import 'rxjs/add/observable/fromPromise';
         </div>
         <div [ngClass]="settings.footerClass" *ngIf="actionButtons && actionButtons.length">
           <button *ngFor="let button of actionButtons" (click)="doAction(button.onAction)"
-            [ngClass]='button.buttonClass || settings.buttonClass'>{{button.text}}</button>
+            [ngClass]="button.buttonClass || settings.buttonClass">{{button.text}}</button>
         </div>
       </div>
     </div>
@@ -122,11 +123,14 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy {
   private _alertTimeout: number;
   private _childInstance: any;
 
+  private _closeDialog$: Subject<void>;
+
   /**
    * CTOR
    * @param componentFactoryResolver
    */
-  constructor(private componentFactoryResolver: ComponentFactoryResolver) { }
+  constructor(private componentFactoryResolver: ComponentFactoryResolver) {
+  }
 
   /**
    * Initialize dialog with reference to instance and options
@@ -142,6 +146,13 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy {
       let componentRef = this.dynamicComponentTarget.createComponent(factory) as ComponentRef<IModalDialog>;
       this._childInstance = componentRef.instance as IModalDialog;
 
+      this._closeDialog$ = new Subject<void>();
+      this._closeDialog$.subscribe(_ => {
+        this._finalizeAndDestroy();
+      });
+
+      options.closeDialogSubject = this._closeDialog$;
+
       this._childInstance['dialogInit'](componentRef, options);
       (document.activeElement as HTMLElement).blur();
     }
@@ -153,7 +164,7 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy {
    * Run action defined on action button
    * @param action
    */
-    doAction(action?: () => Promise<any> | Observable<any> | boolean) {
+  doAction(action?: () => Promise<any> | Observable<any> | boolean) {
     // disable multi clicks
     if (this._inProgress) {
       return;
@@ -190,6 +201,10 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy {
       clearTimeout(this._alertTimeout);
       this._alertTimeout = null;
     }
+
+    if (this._closeDialog$) {
+      this._closeDialog$.unsubscribe();
+    }
   }
 
   /**
@@ -215,7 +230,7 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy {
    * Close if successfull
    * @param callback
    */
-    private _closeIfSuccessful(callback: () => Promise<any> | Observable<any> | boolean) {
+  private _closeIfSuccessful(callback: () => Promise<any> | Observable<any> | boolean) {
     if (!callback) {
       return this._finalizeAndDestroy();
     }

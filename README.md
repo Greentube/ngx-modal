@@ -115,6 +115,7 @@ interface IModalDialogOptions {
   actionButtons?: IModalDialogButton[];
   data?: any;
   settings?: IModalDialogSettings;
+  closeDialogSubject?: Subject<void>;
 }
 ```
 #### Interface details:
@@ -130,12 +131,16 @@ Function to be called on close button click. In case of Promise and Observable, 
 - actionButtons: `Array<IModalDialogButton>`  
 Footer action buttons for control of modal dialog. See [IModalDialogButton](#imodaldialogbutton).
 Action buttons defined in child component have priority over action buttons defined via options.
+Action buttons close the modal dialog upon successful operation.
 
 - data: `any`  
 Arbitrary data that will be passed to child component via `dialogInit` method.
 
 - settings: `IModalDialogSettings`  
 Additional settings for granular configuration of modal dialog. See [IModalDialogSettings](#imodaldialogsettings).
+
+- closeDialogSubject:`Subject<void>`  
+Custom modal closing subject. Can be used to manually trigger modal dialog close from within the child component. 
 
 ### IModalDialogButton
 #### Interface:
