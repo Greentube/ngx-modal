@@ -23,7 +23,7 @@ class DummyComponent implements IModalDialog {
   dialogInit(reference: ComponentRef<IModalDialog>, options?: IModalDialogOptions) {
     this.props = options.data;
     this.closingSubject$ = options.closeDialogSubject;
-  };
+  }
 
   closeMe() {
     if (this.closingSubject$) {
@@ -50,10 +50,6 @@ describe('ModalDialog.Component:', () => {
     module.overrideModule(BrowserDynamicTestingModule, {
       set: { entryComponents: [DummyComponent] }
     });
-    // module.compileComponents().then(() => {
-    //
-    //   done();
-    // });
 
     fixture = module.createComponent(ModalDialogComponent);
     component = fixture.componentInstance;

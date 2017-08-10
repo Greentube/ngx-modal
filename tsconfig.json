@@ -18,11 +18,13 @@
   "files": [
     "index.ts",
     "./src/modal-dialog.component.ts",
-    "./src/modal-dialog.service.ts",
     "./src/modal-dialog.interface.ts",
+    "./src/modal-dialog.service.ts",
+    "./src/modal-dialog-instance.service.ts",
     "./src/simple-modal.component.ts",
-    "./tests/modal-dialog.service.spec.ts",
     "./tests/modal-dialog.component.spec.ts",
+    "./tests/modal-dialog.service.spec.ts",
+    "./tests/modal-dialog-instance.service.spec.ts",
     "./tests/simple-modal.component.spec.ts"
   ],
   "exclude": [

@@ -5,7 +5,21 @@ module.exports = function (config) {
   var configuration = {
     basePath: '',
 
+    client:{
+      clearContext: false // leave Jasmine Spec Runner output visible in browser
+    },
+
     frameworks: ['jasmine'],
+    plugins: [
+      require('karma-jasmine'),
+      require('karma-chrome-launcher'),
+      require('karma-sourcemap-loader'),
+      require('karma-webpack'),
+      require('karma-coverage'),
+      require('karma-webpack'),
+      require('karma-remap-coverage'),
+      require('karma-mocha-reporter')
+    ],
 
     // list of files to exclude
     exclude: [],
@@ -45,7 +59,7 @@ module.exports = function (config) {
     },
 
     // Webpack please don't spam the console when running in karma!
-    webpackServer: {noInfo: true},
+    webpackServer: { noInfo: true },
 
     // web server port
     port: 9876,
@@ -60,9 +74,7 @@ module.exports = function (config) {
 
     autoWatch: false,
 
-    browsers: [
-      'Chrome'
-    ],
+    browsers: [ 'ChromeHeadless' ],
 
     customLaunchers: {
       Chrome_travis_ci: {
@@ -76,6 +88,7 @@ module.exports = function (config) {
 
   if (process.env.TRAVIS) {
     configuration.browsers = ['Chrome_travis_ci'];
+    configuration.reporters = ['mocha'];
   }
 
   config.set(configuration);

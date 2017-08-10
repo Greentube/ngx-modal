@@ -57,14 +57,14 @@ module.exports = {
         test: /\.(js|ts)$/,
         loader: 'istanbul-instrumenter-loader',
         include: helpers.root('src'),
-        exclude: [/\.spec\.ts$/, /\.e2e\.ts$/, /node_modules/]
+        exclude: [/\.spec\.ts$/, /node_modules/]
       }
     ]
   },
 
   plugins: [
     new webpack.ContextReplacementPlugin(
-      /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
+      /angular(\\|\/)core(\\|\/)@angular/,
       helpers.root('./src')
     ),
     new LoaderOptionsPlugin({
@@ -74,7 +74,7 @@ module.exports = {
           emitErrors: false,
           failOnHint: false,
           resourcePath: 'src'
-        },
+        }
       }
     })
   ]

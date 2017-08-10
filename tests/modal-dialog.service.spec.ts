@@ -4,6 +4,7 @@ import { TestBed } from '@angular/core/testing';
 import { IModalDialogOptions, IModalDialog } from '../src/modal-dialog.interface';
 import { ModalDialogComponent } from '../src/modal-dialog.component';
 import { ModalDialogService } from '../src/modal-dialog.service';
+import { ModalDialogInstanceService } from '../src/modal-dialog-instance.service';
 
 let compRef = {
   instance: {
@@ -33,7 +34,8 @@ describe('ModalDialog.Service: ', () => {
       providers: [
         ModalDialogService,
         { provide: ViewContainerRef, useClass: MockedViewContainerRef },
-        { provide: ComponentFactoryResolver, useClass: MockedComponentFactoryResolver }
+        { provide: ComponentFactoryResolver, useClass: MockedComponentFactoryResolver },
+        ModalDialogInstanceService
       ],
       declarations: [ModalDialogComponent]
     });
@@ -49,14 +51,16 @@ describe('ModalDialog.Service: ', () => {
   });
 
   it('should create DataCenterService', () => {
-    let service = new ModalDialogService(componentFactoryResolver);
+    let instanceService = new ModalDialogInstanceService();
+    let service = new ModalDialogService(componentFactoryResolver, instanceService);
     expect(service.openDialog).toBeDefined();
   });
 
   it('should call DynamicComponentLoader.loadNextToLocation on openDialog', () => {
 
     //arrange
-    let service = new ModalDialogService(componentFactoryResolver);
+    let instanceService = new ModalDialogInstanceService();
+    let service = new ModalDialogService(componentFactoryResolver, instanceService);
     let options = { title: 'ABC' };
 
     //act

@@ -33,17 +33,17 @@ module.exports = {
   module: {
     rules: [
       {
-        enforce: 'pre',
-        test: /\.ts$/,
-        loader: 'tslint-loader',
-        exclude: [helpers.root('node_modules')]
-      }, {
         test: /\.ts$/,
         loader: 'awesome-typescript-loader',
         options: {
           declaration: false
         },
-        exclude: [/\.spec\.ts$/]
+        exclude: [/\.spec\.ts$/, helpers.root('node_modules')]
+      },
+      {
+        test: /\.ts$/,
+        enforce: 'pre',
+        loader: 'tslint-loader'
       }
     ]
   },
@@ -57,7 +57,7 @@ module.exports = {
     new webpack.LoaderOptionsPlugin({
       options: {
         tslintLoader: {
-          emitErrors: false,
+          emitErrors: true,
           failOnHint: true
         }
       }

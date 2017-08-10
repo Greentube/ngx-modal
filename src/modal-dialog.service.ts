@@ -1,28 +1,30 @@
-import { ComponentFactoryResolver, ViewContainerRef, ComponentRef, Inject } from '@angular/core';
+import { ComponentFactoryResolver, ViewContainerRef, Inject } from '@angular/core';
 import { ModalDialogComponent } from './modal-dialog.component';
 import { IModalDialogOptions } from './modal-dialog.interface';
+import { ModalDialogInstanceService } from './modal-dialog-instance.service';
 
 export class ModalDialogService {
-    private componentRef: ComponentRef<ModalDialogComponent>;
+  /**
+   * CTOR
+   * @param componentFactoryResolver
+   * @param modalDialogInstanceService
+   */
+  constructor(@Inject(ComponentFactoryResolver) private componentFactoryResolver: ComponentFactoryResolver,
+              @Inject(ModalDialogInstanceService) private modalDialogInstanceService: ModalDialogInstanceService) {
+  }
 
-    /**
-     * CTOR
-     * @param componentFactoryResolver
-     */
-    constructor(@Inject(ComponentFactoryResolver) private componentFactoryResolver: ComponentFactoryResolver) {}
+  /**
+   * Open dialog in given target element with given options
+   * @param  {ViewContainerRef} target
+   * @param  {IModalDialogOptions} dialogOptions?
+   */
+  openDialog(target: ViewContainerRef, dialogOptions?: IModalDialogOptions) {
+    this.modalDialogInstanceService.closeAnyExistingModalDialog();
 
-    /**
-     * Open dialog in given target element with given options
-     * @param  {ViewContainerRef} target
-     * @param  {IModalDialogOptions} dialogOptions?
-     */
-    openDialog(target: ViewContainerRef, dialogOptions?: IModalDialogOptions) {
-        if (this.componentRef) {
-            this.componentRef.destroy();
-        }
+    const factory = this.componentFactoryResolver.resolveComponentFactory(ModalDialogComponent);
+    const componentRef = target.createComponent(factory);
+    componentRef.instance.dialogInit(componentRef, dialogOptions);
 
-        let factory = this.componentFactoryResolver.resolveComponentFactory(ModalDialogComponent);
-        this.componentRef = target.createComponent(factory);
-        this.componentRef.instance.dialogInit(this.componentRef, dialogOptions);
-    }
+    this.modalDialogInstanceService.saveExistingModalDialog(componentRef);
+  }
 }
