@@ -164,7 +164,7 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy {
    * Run action defined on action button
    * @param action
    */
-  doAction(action?: () => Promise<any> | Observable<any> | boolean) {
+  doAction(action?: ModalDialogOnAction) {
     // disable multi clicks
     if (this._inProgress) {
       return;
