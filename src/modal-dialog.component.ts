@@ -10,7 +10,7 @@ import {
   IModalDialog,
   IModalDialogOptions,
   IModalDialogButton,
-  IModalDialogSettings
+  IModalDialogSettings, ModalDialogOnAction
 } from './modal-dialog.interface';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/fromPromise';
@@ -227,10 +227,10 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy {
   }
 
   /**
-   * Close if successfull
+   * Close if successful
    * @param callback
    */
-  private _closeIfSuccessful(callback: () => Promise<any> | Observable<any> | boolean) {
+  private _closeIfSuccessful(callback: ModalDialogOnAction) {
     if (!callback) {
       return this._finalizeAndDestroy();
     }
@@ -245,11 +245,13 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy {
     if (response instanceof Promise) {
       response = Observable.fromPromise(<Promise<any>>response);
     }
-    response.subscribe(() => {
-      this._finalizeAndDestroy();
-    }, () => {
-      this._triggerAlert();
-    });
+    if (response instanceof Observable) {
+      response.subscribe(() => {
+        this._finalizeAndDestroy();
+      }, () => {
+        this._triggerAlert();
+      });
+    }
   }
 
   private _finalizeAndDestroy() {

@@ -16,10 +16,12 @@ export interface IModalDialogOptions {
   closeDialogSubject?: Subject<void>;
 }
 
+export type ModalDialogOnAction = () => Promise<any> | Observable<any> | boolean | void;
+
 export interface IModalDialogButton {
   text: string;
   buttonClass?: string;
-  onAction?: () => Promise<any> | Observable<any> | boolean;
+  onAction?: ModalDialogOnAction;
 }
 
 export interface IModalDialogSettings {

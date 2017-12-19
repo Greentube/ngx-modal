@@ -111,7 +111,7 @@ Modal heading text
 interface IModalDialogOptions {
   title?: string;
   childComponent?: any;
-  onClose?: () => Promise<any> | Observable<any> | boolean;
+  onClose?: ModalDialogOnAction;
   actionButtons?: IModalDialogButton[];
   data?: any;
   settings?: IModalDialogSettings;
@@ -125,7 +125,7 @@ Modal heading text
 - childComponent: `any`  
 Component type that will be rendered as a content of modal dialog. Component must implement `IModalDialog` interface.
 
-- onClose(): `Promise<any>` or `Observable<any>` or `boolean`  
+- onClose(): `ModalDialogOnAction`
 Function to be called on close button click. In case of Promise and Observable, modal dialog will not close unless successful resolve happens. In case of boolean, modal dialog will close only if result is `truthful`.
 
 - actionButtons: `Array<IModalDialogButton>`  
@@ -148,7 +148,7 @@ Custom modal closing subject. Can be used to manually trigger modal dialog close
 interface IModalDialogButton {
   text: string;
   buttonClass?: string;
-  onAction?: () => Promise<any> | Observable<any> | boolean;
+  onAction?: ModalDialogOnAction;
 }
 ```
 #### Interface details:
@@ -159,6 +159,21 @@ Default: `btn btn-primary`
 Class name of button
 - onAction(): `Promise<any> | Observable<any> | boolean`  
 Function to be called on button click. In case of Promise and Observable, modal dialog will not close unless successful resolve happens. In case of boolean, modal dialog will close only if result is `truthful`.
+#### ModalDialogOnAction type
+```ts
+type ModalDialogOnAction = () => Promise<any> | Observable<any> | boolean | void;
+```
+Function returning Promise, Observable, boolean or no value. Modal dialog will close automatically if return of action is:
+* Promise, once promise gets resolved
+* Observable, once observable successfully finishes
+* boolean and value is `true`
+
+Action button will initiate alert behavior if return is:
+* Promise, once promise gets rejected
+* Observable, once observable fails or throws error
+* boolean and value is `false`
+
+If action button returns `void`, there are no side effects.
 
 ### IModalDialogSettings
 #### Interface
