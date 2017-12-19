@@ -251,6 +251,8 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy {
       }, () => {
         this._triggerAlert();
       });
+    } else {
+      this._inProgress = false;
     }
   }
 
