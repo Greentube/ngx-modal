@@ -179,7 +179,7 @@ If action button returns `void`, there are no side effects.
 #### Interface
 ```ts
 interface IModalDialogSettings {
-  overlayClass?: string;
+  dialogClass?: string;
   modalClass?: string;
   contentClass?: string;
   headerClass?: string;
@@ -196,9 +196,9 @@ interface IModalDialogSettings {
 ```
 
 #### Interface details:
-- overlayClass: `string`  
-Default: `modal-backdrop fade show`  
-Style of the backdrop overlay layer
+- dialogClass: `string`
+Default: `modal-dialog-centered`
+Style of second level of div so it can be centered
 - modalClass: `string`  
 Default: `modal fade show`  
 Style of modal wrapper
