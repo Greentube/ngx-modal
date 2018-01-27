@@ -66,8 +66,8 @@ import {Subject} from 'rxjs/Subject';
       }
   `],
     template: `
-    <div [ngClass]="settings.overlayClass"></div>
-    <div [ngClass]="settings.modalClass" (click)="(!actionButtons || !actionButtons.length) && close()">
+    <div [ngClass]="settings.overlayClass"  (click)="(!actionButtons || !actionButtons.length) && close()"></div>
+    <div [ngClass]="settings.modalClass">
         <div class="modal-dialog" [ngClass]="settings.dialogClass">
           <div [ngClass]="[ showAlert ? settings.alertClass : '', settings.contentClass]">
             <div [ngClass]="settings.headerClass">
