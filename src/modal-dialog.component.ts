@@ -66,6 +66,7 @@ import {Subject} from 'rxjs/Subject';
       }
   `],
     template: `
+    <div [ngClass]="settings.overlayClass"></div>
     <div [ngClass]="settings.modalClass" (click)="(!actionButtons || !actionButtons.length) && close()">
         <div class="modal-dialog" [ngClass]="settings.dialogClass">
           <div [ngClass]="[ showAlert ? settings.alertClass : '', settings.contentClass]">
@@ -96,7 +97,7 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy {
     /** Modal dialog style settings */
     public settings: IModalDialogSettings = {
         dialogClass: 'modal-dialog-centered',
-        // overlayClass: 'modal-backdrop fade show',
+        overlayClass: 'modal-backdrop fade show',
         modalClass: 'fade show modal',
         contentClass: 'modal-content',
         headerClass: 'modal-header',

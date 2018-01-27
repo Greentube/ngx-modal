@@ -25,7 +25,7 @@ export interface IModalDialogButton {
 }
 
 export interface IModalDialogSettings {
-    // overlayClass?: string;
+    overlayClass?: string;
     modalClass?: string;
     dialogClass?: string;
     contentClass?: string;
