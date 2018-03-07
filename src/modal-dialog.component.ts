@@ -1,4 +1,4 @@
-﻿import {Component, ComponentFactoryResolver, ComponentRef, OnDestroy, ViewChild, ViewContainerRef} from '@angular/core';
+import {Component, ComponentFactoryResolver, ComponentRef, OnDestroy, ViewChild, ViewContainerRef} from '@angular/core';
 import {
     IModalDialog,
     IModalDialogButton,
@@ -151,7 +151,7 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy {
             options.closeDialogSubject = this._closeDialog$;
 
             this._childInstance['dialogInit'](componentRef, options);
-            (document.activeElement as HTMLElement).blur();
+            document.activeElement != null ? (document.activeElement as HTMLElement).blur(): (document.body as HTMLElement).blur();
         }
         // set options
         this._setOptions(options);
