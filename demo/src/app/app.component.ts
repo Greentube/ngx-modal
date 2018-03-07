@@ -79,7 +79,7 @@ export class AppComponent {
       settings: {
         closeButtonClass: 'close theme-icon-close'
       },
-      data: 'some data passed from parent'
+      data: 'Hey, we are data passed from the parent!'
     });
   }
 }
