@@ -6,8 +6,6 @@ const helpers = require('./helpers');
 const webpack = require('webpack');
 const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
 
-const ENV = process.env.ENV = process.env.NODE_ENV = 'test';
-
 module.exports = {
   /**
    * Source map for Karma from the help of karma-sourcemap-loader &  karma-webpack

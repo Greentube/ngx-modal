@@ -8,15 +8,19 @@
     "declaration": true,
     "moduleResolution": "node",
     "noUnusedLocals": true,
+    "stripInternal": true,
+    "allowSyntheticDefaultImports": true,
+    "noUnusedParameters": false,
     "types": [
       "hammerjs",
       "jasmine",
       "node"
     ],
-    "lib": ["es2015", "dom"]
+    "lib": ["es7", "es2015", "dom"]
   },
   "files": [
     "index.ts",
+    "./src/modal-dialog.module.ts",
     "./src/modal-dialog.component.ts",
     "./src/modal-dialog.interface.ts",
     "./src/modal-dialog.service.ts",

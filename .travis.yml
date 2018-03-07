@@ -3,6 +3,10 @@ language: node_js
 cache:
   directories:
     - node_modules
+install:
+  - npm i --silent --no-optional -g @angular/cli@1.5.4
+  - npm i --silent --no-optional -g angular-cli-ghpages@0.5.2
+
 notifications:
   email: false
 node_js:

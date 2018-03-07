@@ -2,18 +2,11 @@ const helpers = require('./config/helpers');
 const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
-/**
- * Webpack Plugins
- */
-const ProvidePlugin = require('webpack/lib/ProvidePlugin');
-const DefinePlugin = require('webpack/lib/DefinePlugin');
-const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
-
 module.exports = {
   devtool: '#source-map',
 
   resolve: {
-    extensions: ['.ts', '.js', '.css', '.scss', '.html']
+    extensions: ['.ts', '.js']
   },
 
   entry: helpers.root('index.ts'),
@@ -31,27 +24,25 @@ module.exports = {
   target: 'node',
 
   module: {
-    rules: [
-      {
-        test: /\.ts$/,
-        loader: 'awesome-typescript-loader',
-        options: {
-          declaration: false
-        },
-        exclude: [/\.spec\.ts$/, helpers.root('node_modules')]
+    rules: [{
+      enforce: 'pre',
+      test: /\.ts$/,
+      loader: 'tslint-loader',
+      exclude: [helpers.root('node_modules')]
+    },
+    {
+      test: /\.ts$/,
+      loader: 'awesome-typescript-loader',
+      options: {
+        declaration: false
       },
-      {
-        test: /\.ts$/,
-        enforce: 'pre',
-        loader: 'tslint-loader'
-      }
-    ]
+      exclude: [/\.spec\.ts$/, helpers.root('node_modules')]
+    }]
   },
 
   plugins: [
-    // fix the warning in ./~/@angular/core/src/linker/system_js_ng_module_factory_loader.js
     new webpack.ContextReplacementPlugin(
-      /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
+      /@angular(\\|\/)core(\\|\/)esm5/,
       helpers.root('./src')
     ),
     new webpack.LoaderOptionsPlugin({

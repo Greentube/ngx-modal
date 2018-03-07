@@ -17,11 +17,11 @@ tests
 coverage
 config
 karma.conf.js
-copy.js
 tsconfig.json
 tslint.json
-!*.metadata.json
-!bundles/*.js
+webpack.config.js
+package-lock.json
+CODE_OF_CONDUCT.md
 .*
 
 ############
@@ -40,3 +40,9 @@ Desktop.ini
 
 # Mac crap
 .DS_Store
+
+############
+## Demos
+############
+
+demo/*

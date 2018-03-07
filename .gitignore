@@ -1,27 +1,38 @@
+############
+## Project
+############
+
+bundles/
+node_modules/
+coverage/
+
 #################
-## Misc
+## Compiled
 #################
-**/.DS_Store
-nbproject
-manifest.mf
-build.xml
-node_modules/*
-npm-debug.log
+
+*.map
+*.metadata.json
+*.d.ts
 *.js
 !config/*
 !karma.conf.js
-*.map
-*.d.ts
-!copy.js
+!protractor.conf.js
 !webpack.config.js
-!examples/**/*.js
-coverage
-*.metadata.json
-/compiled
+!demo/src/typings.d.ts
+
+#################
+## Misc
+#################
+
+nbproject
+manifest.mf
+build.xml
+npm-debug.log
 
 #################
 ## IDEs
 #################
+
 .idea
 .project
 .settings
@@ -31,18 +42,11 @@ coverage
 ## Windows
 ############
 
-# Windows image file caches
 Thumbs.db
-
-# Folder config file
 Desktop.ini
 
 ############
 ## Mac
 ############
 
-# Mac crap
 .DS_Store
-
-bundles/
-node_modules/
