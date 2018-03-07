@@ -1,0 +1,20 @@
+<header class="navbar navbar-dark bg-dark">
+  <a class="navbar-brand" href="#">ngx-modal-dialog demo</a>
+</header>
+<main>
+  <div class="container">
+    <p>
+      Demo showcase of ngx-modal-dialog component
+    </p>
+    <div class="row">
+      <div class="col">
+        <button class="btn btn-primary" type="button" (click)="openSimpleModal()">Open simple modal</button>
+        <button class="btn btn-warning" type="button" (click)="openSimpleModalWithCallback()">Open modal with close
+          callback
+        </button>
+        <button class="btn btn-danger" type="button" (click)="openPromptModal()">Open modal with prompt</button>
+        <button class="btn btn-success" type="button" (click)="openCustomModal()">Open custom modal component</button>
+      </div>
+    </div>
+  </div>
+</main>
