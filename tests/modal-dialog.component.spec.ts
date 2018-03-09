@@ -20,7 +20,7 @@ class DummyComponent implements IModalDialog {
   props: any;
   closingSubject$: Subject<void>;
 
-  dialogInit(reference: ComponentRef<IModalDialog>, options?: IModalDialogOptions) {
+  dialogInit(reference: ComponentRef<IModalDialog>, options: Partial<IModalDialogOptions<any>> = {}) {
     this.props = options.data;
     this.closingSubject$ = options.closeDialogSubject;
   }

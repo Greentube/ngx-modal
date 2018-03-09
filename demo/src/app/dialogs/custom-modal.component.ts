@@ -11,7 +11,7 @@ import { Component, ComponentRef } from '@angular/core';
 export class CustomModalComponent implements IModalDialog {
   parentInfo: string;
 
-  dialogInit(reference: ComponentRef<IModalDialog>, options?: IModalDialogOptions) {
+  dialogInit(reference: ComponentRef<IModalDialog>, options: Partial<IModalDialogOptions<string>>) {
     this.parentInfo = options.data;
   }
 }

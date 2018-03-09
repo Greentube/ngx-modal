@@ -134,7 +134,7 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy, OnInit {
    * @param reference
    * @param options
    */
-  dialogInit(reference: ComponentRef<IModalDialog>, options: Partial<IModalDialogOptions> = {}) {
+  dialogInit(reference: ComponentRef<IModalDialog>, options: Partial<IModalDialogOptions<any>> = {}) {
     this.reference = reference;
 
     // inject component
@@ -223,7 +223,7 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy, OnInit {
    * Pass options from dialog setup to component
    * @param  {IModalDialogOptions} options?
    */
-  private _setOptions(options: Partial<IModalDialogOptions>) {
+  private _setOptions(options: Partial<IModalDialogOptions<any>>) {
 
     if (options.onClose && options.actionButtons && options.actionButtons.length) {
       throw new Error(`OnClose callback and ActionButtons are not allowed to be defined on the same dialog.`);

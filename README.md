@@ -79,7 +79,7 @@ class MyModalComponent implements IModalDialog {
     ];
   }
 
-  dialogInit(reference: ComponentRef<IModalDialog>, options?: IModalDialogOptions) {
+  dialogInit(reference: ComponentRef<IModalDialog>, options: Partial<IModalDialogOptions<any>>) {
     // no processing needed
   }
 }
@@ -89,12 +89,13 @@ class MyModalComponent implements IModalDialog {
 
 ### ModalDialogService
 #### Methods:
-- `openDialog(target: ViewContainerRef, dialogOptions: Partial<IModalDialogOptions> = {})`: Closes existing and opens a new modal dialog according to IModalDialogOptions.
+- `openDialog(target: ViewContainerRef, options: Partial<IModalDialogOptions<T>> = {})`: Closes existing and opens a new modal dialog according to IModalDialogOptions.
+`T` represents a type of options `data` field. If you don't care about strong typing just pass `any`.
 
 ### IModalDialog
 Every component that is used as modal dialog must implement `IModalDialog`.
 #### Methods:
-- `dialogInit(reference: ComponentRef<IModalDialog>, options: Partial<IModalDialogOptions>) => void`
+- `dialogInit(reference: ComponentRef<IModalDialog>, options: Partial<IModalDialogOptions<any>>) => void`
 Mandatory: `true`
 Default: -
 This method is called after initialization of child component. Purpose of the method is to pass necessary information from outer scope to child component.
@@ -108,16 +109,17 @@ Modal heading text
 ### IModalDialogOptions
 #### Interface:
 ```ts
-interface IModalDialogOptions {
+interface IModalDialogOptions<T> {
   title: string;
-  childComponent: any;
+  childComponent: IModalDialog;
   onClose: ModalDialogOnAction;
   actionButtons: IModalDialogButton[];
-  data: any;
+  data: T;
   settings: IModalDialogSettings;
   closeDialogSubject: Subject<void>;
 }
 ```
+This is generic interface, where `T` is arbitrary type of `data` section.
 #### Interface details:
 - title: `string`  
 Modal heading text
@@ -133,7 +135,7 @@ Footer action buttons for control of modal dialog. See [IModalDialogButton](#imo
 Action buttons defined in child component have priority over action buttons defined via options.
 Action buttons close the modal dialog upon successful operation.
 
-- data: `any`  
+- data: `T`  
 Arbitrary data that will be passed to child component via `dialogInit` method.
 
 - settings: `IModalDialogSettings`  

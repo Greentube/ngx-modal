@@ -3,15 +3,15 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
 export interface IModalDialog {
-  dialogInit: (reference: ComponentRef<IModalDialog>, options: Partial<IModalDialogOptions>) => void;
+  dialogInit: (reference: ComponentRef<IModalDialog>, options: Partial<IModalDialogOptions<any>>) => void;
 }
 
-export interface IModalDialogOptions {
+export interface IModalDialogOptions<T> {
   title: string;
   childComponent: any;
   onClose: () => Promise<any> | Observable<any> | boolean;
   actionButtons: IModalDialogButton[];
-  data: any;
+  data: T;
   settings: Partial<IModalDialogSettings>;
   closeDialogSubject: Subject<void>;
 }

@@ -8,7 +8,7 @@ import { ModalDialogInstanceService } from '../src/modal-dialog-instance.service
 
 let compRef = {
   instance: {
-    dialogInit: (reference: ComponentRef<IModalDialog>, options?: IModalDialogOptions) => { /**/
+    dialogInit: (reference: ComponentRef<IModalDialog>, options: Partial<IModalDialogOptions<any>> = {}) => { /**/
     }
   },
   destroy() {
