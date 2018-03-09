@@ -4323,9 +4323,9 @@ netmask@~1.0.4:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/netmask/-/netmask-1.0.6.tgz#20297e89d86f6f6400f250d9f4f6b4c1945fcd35"
 
-ngx-modal-dialog@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/ngx-modal-dialog/-/ngx-modal-dialog-2.0.0.tgz#ceb41d3d88917ffa4bfeb2945bd691aa8deb6a01"
+ngx-modal-dialog@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/ngx-modal-dialog/-/ngx-modal-dialog-2.0.1.tgz#bad65cc24a74682fd24d965014e3cae4fdbe5624"
 
 no-case@^2.2.0:
   version "2.3.2"
