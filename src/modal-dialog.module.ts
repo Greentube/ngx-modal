@@ -5,7 +5,13 @@ import { SimpleModalComponent } from './simple-modal.component';
 import { ModalDialogInstanceService } from './modal-dialog-instance.service';
 // modules
 import { CommonModule } from '@angular/common';
-import { NgModule, ModuleWithProviders } from '@angular/core';
+import { NgModule, ModuleWithProviders, InjectionToken, SkipSelf, Optional } from '@angular/core';
+
+/**
+ * Guard to make sure we have single initialization of forRoot
+ * @type {InjectionToken<ModalDialogModule>}
+ */
+export const MODAL_DIALOG_FORROOT_GUARD = new InjectionToken<ModalDialogModule>('MODAL_DIALOG_FORROOT_GUARD');
 
 @NgModule({
   imports: [CommonModule],
@@ -19,7 +25,26 @@ export class ModalDialogModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: ModalDialogModule,
-      providers: [ModalDialogInstanceService]
+      providers: [
+        {
+          provide: MODAL_DIALOG_FORROOT_GUARD,
+          useFactory: provideForRootGuard,
+          deps: [[ModalDialogModule, new Optional(), new SkipSelf()]]
+        },
+        ModalDialogInstanceService
+      ]
     };
   }
+}
+
+/**
+ * @param dialogModule
+ * @returns {string}
+ */
+export function provideForRootGuard(dialogModule: ModalDialogModule): string {
+  if (dialogModule) {
+    throw new Error(
+      `ModalDialogModule.forRoot() called twice.`);
+  }
+  return 'guarded';
 }
