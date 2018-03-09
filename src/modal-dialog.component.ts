@@ -91,7 +91,7 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy, OnInit {
   public reference: ComponentRef<IModalDialog>;
 
   /** Modal dialog style settings */
-  protected settings: IModalDialogSettings = {
+  public settings: IModalDialogSettings = {
     overlayClass: 'modal-backdrop fade',
     overlayAnimationTriggerClass: 'show',
     modalClass: 'modal ngx-modal fade',
@@ -113,9 +113,9 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy, OnInit {
   public title: string;
   public onClose: () => Promise<any> | Observable<any> | boolean;
 
-  protected showAlert: boolean = false;
-  protected animateOverlayClass = '';
-  protected animateModalClass = '';
+  public showAlert: boolean = false;
+  public animateOverlayClass = '';
+  public animateModalClass = '';
 
   private _inProgress = false;
   private _alertTimeout: number;
