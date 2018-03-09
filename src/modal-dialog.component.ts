@@ -4,7 +4,7 @@
   ComponentFactoryResolver,
   ViewContainerRef,
   ViewChild,
-  OnDestroy
+  OnDestroy, OnInit
 } from '@angular/core';
 import {
   IModalDialog,
@@ -13,15 +13,13 @@ import {
   IModalDialogSettings, ModalDialogOnAction
 } from './modal-dialog.interface';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/fromPromise';
 import { Subject } from 'rxjs/Subject';
+import { fromPromise } from 'rxjs/observable/fromPromise';
+import { of } from 'rxjs/observable/of';
+import { delay } from 'rxjs/operators';
 
 /**
  * Modal dialog component
- * Usage:
- *
- * Model properties are:
- *
  */
 @Component({
   selector: 'modal-dialog',
@@ -43,7 +41,7 @@ import { Subject } from 'rxjs/Subject';
       }
 
       .ngx-modal {
-        display: block;
+        display: flex;
       }
       .ngx-modal-shake {
         backface-visibility: hidden;
@@ -62,15 +60,16 @@ import { Subject } from 'rxjs/Subject';
       }
   `],
   template: `
-    <div [ngClass]="settings.overlayClass" (click)="(!actionButtons || !actionButtons.length) && close()"></div>
-    <div [ngClass]="settings.modalClass">
+    <div *ngIf="settings.overlayClass" [ngClass]="[settings.overlayClass, animateOverlayClass]"
+         (click)="(!actionButtons || !actionButtons.length) && close()"></div>
+    <div [ngClass]="[settings.modalClass, animateModalClass]">
       <div [ngClass]="settings.modalDialogClass">
         <div [ngClass]="[ showAlert ? settings.alertClass : '', settings.contentClass]">
           <div [ngClass]="settings.headerClass">
             <h4 [ngClass]="settings.headerTitleClass">{{title}}</h4>
             <button (click)="close()" *ngIf="!actionButtons || !actionButtons.length" type="button"
-              [title]="settings.closeButtonTitle"
-              [ngClass]="settings.closeButtonClass">
+                    [title]="settings.closeButtonTitle"
+                    [ngClass]="settings.closeButtonClass">
             </button>
           </div>
           <div [ngClass]="settings.bodyClass">
@@ -78,22 +77,25 @@ import { Subject } from 'rxjs/Subject';
           </div>
           <div [ngClass]="settings.footerClass" *ngIf="actionButtons && actionButtons.length">
             <button *ngFor="let button of actionButtons" (click)="doAction(button.onAction)"
-              [ngClass]="button.buttonClass || settings.buttonClass">{{button.text}}</button>
+                    [ngClass]="button.buttonClass || settings.buttonClass">{{button.text}}
+            </button>
           </div>
         </div>
       </div>
     </div>
-    `
+  `
 })
-export class ModalDialogComponent implements IModalDialog, OnDestroy {
+export class ModalDialogComponent implements IModalDialog, OnDestroy, OnInit {
   @ViewChild('modalDialogBody', { read: ViewContainerRef })
   public dynamicComponentTarget: ViewContainerRef;
   public reference: ComponentRef<IModalDialog>;
 
   /** Modal dialog style settings */
-  public settings: IModalDialogSettings = {
-    overlayClass: 'modal-backdrop fade show',
-    modalClass: 'modal fade show ngx-modal',
+  protected settings: IModalDialogSettings = {
+    overlayClass: 'modal-backdrop fade',
+    overlayAnimationTriggerClass: 'show',
+    modalClass: 'modal ngx-modal fade',
+    modalAnimationTriggerClass: 'show',
     modalDialogClass: 'modal-dialog modal-dialog-centered',
     contentClass: 'modal-content',
     headerClass: 'modal-header',
@@ -110,12 +112,14 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy {
   public actionButtons: IModalDialogButton[];
   public title: string;
   public onClose: () => Promise<any> | Observable<any> | boolean;
-  public showAlert: boolean = false;
+
+  protected showAlert: boolean = false;
+  protected animateOverlayClass = '';
+  protected animateModalClass = '';
 
   private _inProgress = false;
   private _alertTimeout: number;
   private _childInstance: any;
-
   private _closeDialog$: Subject<void>;
 
   /**
@@ -155,6 +159,33 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy {
     this._setOptions(options);
   }
 
+  ngOnInit() {
+    // a trick to defer css animations
+    of(void 0).pipe(delay(0)).subscribe(() => {
+      this.animateOverlayClass = this.settings.overlayAnimationTriggerClass;
+      this.animateModalClass = this.settings.modalAnimationTriggerClass;
+    });
+  }
+
+  /**
+   * Cleanup on destroy
+   */
+  ngOnDestroy() {
+    // run animations
+    this.animateOverlayClass = '';
+    this.animateModalClass = '';
+
+    // cleanup listeners
+    if (this._alertTimeout) {
+      clearTimeout(this._alertTimeout);
+      this._alertTimeout = null;
+    }
+
+    if (this._closeDialog$) {
+      this._closeDialog$.unsubscribe();
+    }
+  }
+
   /**
    * Run action defined on action button
    * @param action
@@ -186,20 +217,6 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy {
       return;
     }
     this._finalizeAndDestroy();
-  }
-
-  /**
-   * Cleanup on destroy
-   */
-  ngOnDestroy() {
-    if (this._alertTimeout) {
-      clearTimeout(this._alertTimeout);
-      this._alertTimeout = null;
-    }
-
-    if (this._closeDialog$) {
-      this._closeDialog$.unsubscribe();
-    }
   }
 
   /**
@@ -238,7 +255,7 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy {
       return this._triggerAlert();
     }
     if (response instanceof Promise) {
-      response = Observable.fromPromise(<Promise<any>>response);
+      response = fromPromise(<Promise<any>>response);
     }
     if (response instanceof Observable) {
       response.subscribe(() => {

@@ -180,7 +180,9 @@ If action button returns `void`, there are no side effects.
 ```ts
 interface IModalDialogSettings {
   overlayClass: string;
+  overlayAnimationTriggerClass: string;
   modalClass: string;
+  modalAnimationTriggerClass: string;
   contentClass: string;
   headerClass: string;
   headerTitleClass: string;
@@ -199,9 +201,15 @@ interface IModalDialogSettings {
 - overlayClass: `string`  
 Default: `modal-backdrop fade show`  
 Style of the backdrop overlay layer
+- overlayAnimationTriggerClass: `string`  
+Default: `show`  
+Class that triggers the initial/ending animation of modal overlay
 - modalClass: `string`  
-Default: `modal fade show ngx-modal`  
+Default: `modal fade ngx-modal`  
 Style of modal wrapper
+- modalAnimationTriggerClass: `string`  
+Default: `show`  
+Class that triggers the initial/ending animation of modal wrapper
 - modalDialogClass: `string`  
 Default: `modal-dialog modal-dialog-centered`  
 Style of modal dialog
