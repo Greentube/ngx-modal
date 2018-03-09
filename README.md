@@ -54,7 +54,7 @@ export class AppModule { }
 
 Custom component should be inserted into both `declarations` and `entryComponents` in the NgModule they are part of. `entryComponents` has to be used since component is dynamically inserted onto the page and Angular is not aware of it.
 
-3. Inject the `ModalDialogService` where you want to open the dialog. Call `openDialog` passing parent `ViewContainerRef` and `IModalDialogOptions`:
+3. Inject the `ModalDialogService` where you want to open the dialog. Call `openDialog` passing parent `ViewContainerRef` and partial `IModalDialogOptions` object:
 ```ts
 constructor(modalService: ModalDialogService, viewRef: ViewContainerRef) { }
 
@@ -89,12 +89,12 @@ class MyModalComponent implements IModalDialog {
 
 ### ModalDialogService
 #### Methods:
-- `openDialog(target: ViewContainerRef, dialogOptions?: IModalDialogOptions)`: Closes existing and opens a new modal dialog according to IModalDialogOptions.
+- `openDialog(target: ViewContainerRef, dialogOptions: Partial<IModalDialogOptions> = {})`: Closes existing and opens a new modal dialog according to IModalDialogOptions.
 
 ### IModalDialog
 Every component that is used as modal dialog must implement `IModalDialog`.
 #### Methods:
-- `dialogInit(reference: ComponentRef<IModalDialog>, options?: IModalDialogOptions) => void`
+- `dialogInit(reference: ComponentRef<IModalDialog>, options: Partial<IModalDialogOptions>) => void`
 Mandatory: `true`
 Default: -
 This method is called after initialization of child component. Purpose of the method is to pass necessary information from outer scope to child component.
@@ -109,13 +109,13 @@ Modal heading text
 #### Interface:
 ```ts
 interface IModalDialogOptions {
-  title?: string;
-  childComponent?: any;
-  onClose?: ModalDialogOnAction;
-  actionButtons?: IModalDialogButton[];
-  data?: any;
-  settings?: IModalDialogSettings;
-  closeDialogSubject?: Subject<void>;
+  title: string;
+  childComponent: any;
+  onClose: ModalDialogOnAction;
+  actionButtons: IModalDialogButton[];
+  data: any;
+  settings: IModalDialogSettings;
+  closeDialogSubject: Subject<void>;
 }
 ```
 #### Interface details:
@@ -179,19 +179,19 @@ If action button returns `void`, there are no side effects.
 #### Interface
 ```ts
 interface IModalDialogSettings {
-  overlayClass?: string;
-  modalClass?: string;
-  contentClass?: string;
-  headerClass?: string;
-  headerTitleClass?: string;
-  closeButtonClass?: string;
-  closeButtonTitle?: string;
-  bodyClass?: string;
-  footerClass?: string;
-  alertClass?: string;
-  alertDuration?: number;
-  buttonClass?: string;
-  notifyWithAlert?: boolean;
+  overlayClass: string;
+  modalClass: string;
+  contentClass: string;
+  headerClass: string;
+  headerTitleClass: string;
+  closeButtonClass: string;
+  closeButtonTitle: string;
+  bodyClass: string;
+  footerClass: string;
+  alertClass: string;
+  alertDuration: number;
+  buttonClass: string;
+  notifyWithAlert: boolean;
 }
 ```
 
@@ -200,8 +200,11 @@ interface IModalDialogSettings {
 Default: `modal-backdrop fade show`  
 Style of the backdrop overlay layer
 - modalClass: `string`  
-Default: `modal fade show`  
+Default: `modal fade show ngx-modal`  
 Style of modal wrapper
+- modalDialogClass: `string`  
+Default: `modal-dialog modal-dialog-centered`  
+Style of modal dialog
 - contentClass: `string`  
 Default: `modal-content`  
 Modal dialog inner content class
@@ -224,7 +227,7 @@ Modal dialog body class
 Default: `modal-footer`  
 Modal dialog footer class
 - alertClass: `string`  
-Default: `shake`  
+Default: `ngx-modal-shake`  
 Style to be appended to dialog once alert happens
 - alertDuration: `number`  
 Default: `250`  

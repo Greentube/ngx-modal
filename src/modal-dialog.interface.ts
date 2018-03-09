@@ -3,17 +3,17 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
 export interface IModalDialog {
-  dialogInit: (reference: ComponentRef<IModalDialog>, options?: IModalDialogOptions) => void;
+  dialogInit: (reference: ComponentRef<IModalDialog>, options: Partial<IModalDialogOptions>) => void;
 }
 
 export interface IModalDialogOptions {
-  title?: string;
-  childComponent?: any;
-  onClose?: () => Promise<any> | Observable<any> | boolean;
-  actionButtons?: IModalDialogButton[];
-  data?: any;
-  settings?: IModalDialogSettings;
-  closeDialogSubject?: Subject<void>;
+  title: string;
+  childComponent: any;
+  onClose: () => Promise<any> | Observable<any> | boolean;
+  actionButtons: IModalDialogButton[];
+  data: any;
+  settings: Partial<IModalDialogSettings>;
+  closeDialogSubject: Subject<void>;
 }
 
 export type ModalDialogOnAction = () => Promise<any> | Observable<any> | boolean | void;
@@ -25,19 +25,19 @@ export interface IModalDialogButton {
 }
 
 export interface IModalDialogSettings {
-  overlayClass?: string;
-  modalClass?: string;
-  contentClass?: string;
-  headerClass?: string;
-  headerTitleClass?: string;
-  closeButtonClass?: string;
-  closeButtonTitle?: string;
+  overlayClass: string;
+  modalClass: string;
+  modalDialogClass: string;
+  contentClass: string;
+  headerClass: string;
+  headerTitleClass: string;
+  closeButtonClass: string;
+  closeButtonTitle: string;
 
-  bodyClass?: string;
-  footerClass?: string;
-  alertClass?: string;
-  alertDuration?: number;
-  buttonClass?: string;
-  notifyWithAlert?: boolean;
+  bodyClass: string;
+  footerClass: string;
+  alertClass: string;
+  alertDuration: number;
+  buttonClass: string;
+  notifyWithAlert: boolean;
 }
-

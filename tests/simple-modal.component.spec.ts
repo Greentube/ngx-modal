@@ -33,11 +33,4 @@ describe('SimpleModal.Component: ', () => {
       instance.dialogInit(fixture.componentRef, {});
     }).toThrowError(/Data information for simple modal dialog is missing/);
   });
-  it('should throw exception if no options', () => {
-    let instance = fixture.componentInstance;
-
-    expect(() => {
-      instance.dialogInit(fixture.componentRef);
-    }).toThrowError(/Data information for simple modal dialog is missing/);
-  });
 });

@@ -27,35 +27,25 @@ import { Subject } from 'rxjs/Subject';
   selector: 'modal-dialog',
   styles: [`
       @-moz-keyframes shake {
-        from, to                { transform: translate3d(0, -50%, 0); }
-        10%, 30%, 50%, 70%, 90% { transform: translate3d(-2rem, -50%, 0); }
-        20%, 40%, 60%, 80%      { transform: translate3d(2rem, -50%, 0); }
+        from, to                { transform: translate3d(0, 0, 0); }
+        10%, 30%, 50%, 70%, 90% { transform: translate3d(-2rem, 0, 0); }
+        20%, 40%, 60%, 80%      { transform: translate3d(2rem, 0, 0); }
       }
       @-webkit-keyframes shake {
-        from, to                { transform: translate3d(0, -50%, 0); }
-        10%, 30%, 50%, 70%, 90% { transform: translate3d(-2rem, -50%, 0); }
-        20%, 40%, 60%, 80%      { transform: translate3d(2rem, -50%, 0); }
+        from, to                { transform: translate3d(0, 0, 0); }
+        10%, 30%, 50%, 70%, 90% { transform: translate3d(-2rem, 0, 0); }
+        20%, 40%, 60%, 80%      { transform: translate3d(2rem, 0, 0); }
       }
       @keyframes shake {
-        from, to                { transform: translate3d(0, -50%, 0); }
-        10%, 30%, 50%, 70%, 90% { transform: translate3d(-2rem, -50%, 0); }
-        20%, 40%, 60%, 80%      { transform: translate3d(2rem, -50%, 0); }
+        from, to                { transform: translate3d(0, 0, 0); }
+        10%, 30%, 50%, 70%, 90% { transform: translate3d(-2rem, 0, 0); }
+        20%, 40%, 60%, 80%      { transform: translate3d(2rem, 0, 0); }
       }
 
-      .modal {
+      .ngx-modal {
         display: block;
-        top: 50%;
-        left: 50%;
-        right: auto;
-        bottom: auto;
-        backface-visibility: hidden;
-        overflow: visible;
       }
-      .modal-content {
-        left: -50%;
-        transform: translateY(-50%);
-      }
-      .modal-content.shake {
+      .ngx-modal-shake {
         backface-visibility: hidden;
         -webkit-animation-duration: 0.5s;
         -moz-animation-duration: 0.5s;
@@ -74,20 +64,22 @@ import { Subject } from 'rxjs/Subject';
   template: `
     <div [ngClass]="settings.overlayClass" (click)="(!actionButtons || !actionButtons.length) && close()"></div>
     <div [ngClass]="settings.modalClass">
-      <div [ngClass]="[ showAlert ? settings.alertClass : '', settings.contentClass]">
-        <div [ngClass]="settings.headerClass">
-          <h4 [ngClass]="settings.headerTitleClass">{{title}}</h4>
-          <button (click)="close()" *ngIf="!actionButtons || !actionButtons.length" type="button"
-            [title]="settings.closeButtonTitle"
-            [ngClass]="settings.closeButtonClass">
-          </button>
-        </div>
-        <div [ngClass]="settings.bodyClass">
-          <i #modalDialogBody></i>
-        </div>
-        <div [ngClass]="settings.footerClass" *ngIf="actionButtons && actionButtons.length">
-          <button *ngFor="let button of actionButtons" (click)="doAction(button.onAction)"
-            [ngClass]="button.buttonClass || settings.buttonClass">{{button.text}}</button>
+      <div [ngClass]="settings.modalDialogClass">
+        <div [ngClass]="[ showAlert ? settings.alertClass : '', settings.contentClass]">
+          <div [ngClass]="settings.headerClass">
+            <h4 [ngClass]="settings.headerTitleClass">{{title}}</h4>
+            <button (click)="close()" *ngIf="!actionButtons || !actionButtons.length" type="button"
+              [title]="settings.closeButtonTitle"
+              [ngClass]="settings.closeButtonClass">
+            </button>
+          </div>
+          <div [ngClass]="settings.bodyClass">
+            <i #modalDialogBody></i>
+          </div>
+          <div [ngClass]="settings.footerClass" *ngIf="actionButtons && actionButtons.length">
+            <button *ngFor="let button of actionButtons" (click)="doAction(button.onAction)"
+              [ngClass]="button.buttonClass || settings.buttonClass">{{button.text}}</button>
+          </div>
         </div>
       </div>
     </div>
@@ -101,7 +93,8 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy {
   /** Modal dialog style settings */
   public settings: IModalDialogSettings = {
     overlayClass: 'modal-backdrop fade show',
-    modalClass: 'fade show modal',
+    modalClass: 'modal fade show ngx-modal',
+    modalDialogClass: 'modal-dialog modal-dialog-centered',
     contentClass: 'modal-content',
     headerClass: 'modal-header',
     headerTitleClass: 'modal-title',
@@ -109,7 +102,7 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy {
     closeButtonTitle: 'CLOSE',
     bodyClass: 'modal-body',
     footerClass: 'modal-footer',
-    alertClass: 'shake',
+    alertClass: 'ngx-modal-shake',
     alertDuration: 250,
     notifyWithAlert: true,
     buttonClass: 'btn btn-primary'
@@ -137,11 +130,11 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy {
    * @param reference
    * @param options
    */
-  dialogInit(reference: ComponentRef<IModalDialog>, options?: IModalDialogOptions) {
+  dialogInit(reference: ComponentRef<IModalDialog>, options: Partial<IModalDialogOptions> = {}) {
     this.reference = reference;
 
     // inject component
-    if (options && options.childComponent) {
+    if (options.childComponent) {
       let factory = this.componentFactoryResolver.resolveComponentFactory(options.childComponent);
       let componentRef = this.dynamicComponentTarget.createComponent(factory) as ComponentRef<IModalDialog>;
       this._childInstance = componentRef.instance as IModalDialog;
@@ -213,9 +206,9 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy {
    * Pass options from dialog setup to component
    * @param  {IModalDialogOptions} options?
    */
-  private _setOptions(options?: IModalDialogOptions) {
+  private _setOptions(options: Partial<IModalDialogOptions>) {
 
-    if (options && options.onClose && options.actionButtons && options.actionButtons.length) {
+    if (options.onClose && options.actionButtons && options.actionButtons.length) {
       throw new Error(`OnClose callback and ActionButtons are not allowed to be defined on the same dialog.`);
     }
     // set references

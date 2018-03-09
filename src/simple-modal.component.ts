@@ -1,5 +1,5 @@
-import { Component, ComponentRef }           from '@angular/core';
-import { IModalDialog, IModalDialogOptions }  from './modal-dialog.interface';
+import { Component, ComponentRef } from '@angular/core';
+import { IModalDialog, IModalDialogOptions } from './modal-dialog.interface';
 
 @Component({
   selector: 'simple-modal-dialog',
@@ -12,8 +12,13 @@ import { IModalDialog, IModalDialogOptions }  from './modal-dialog.interface';
 export class SimpleModalComponent implements IModalDialog {
   text: string;
 
-  dialogInit(reference: ComponentRef<IModalDialog>, options?: IModalDialogOptions) {
-    if (!options || !options.data) {
+  /**
+   * Initialize dialog with simple HTML content
+   * @param {ComponentRef<IModalDialog>} reference
+   * @param {Partial<IModalDialogOptions>} options
+   */
+  dialogInit(reference: ComponentRef<IModalDialog>, options: Partial<IModalDialogOptions>) {
+    if (!options.data) {
       throw new Error(`Data information for simple modal dialog is missing`);
     }
     this.text = options.data.text;
