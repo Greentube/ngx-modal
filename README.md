@@ -3,7 +3,10 @@
 [![npm version](https://img.shields.io/npm/v/ngx-modal-dialog.svg)](https://www.npmjs.com/package/ngx-modal-dialog)
 > Dynamic modal dialog for Angular that does not sit on DOM waiting to be triggered, but rather gets injected upon need.
 
-> Made with Bootstrap 4 styles in mind, but configurable to any framework or custom set of styles
+Made with Bootstrap 4 styles in mind, but configurable to any framework or custom set of styles.
+Simple demo can be found [here](https://greentube.github.io/ngx-modal/).
+
+> This documentation is for version 2.x.x. If you are migrating from the older version please follow [migration guide](https://github.com/Greentube/ngx-modal/blob/master/MIGRATION_GUIDE.md) to upgrade to the latest version.
 
 # Table of contents:
 - [Installation](#installation)
@@ -84,6 +87,14 @@ class MyModalComponent implements IModalDialog {
   }
 }
 ```
+
+Action button can be of two types:
+- with return value  
+  Used for controlling the dialog life.  
+  If value is `truthful` (true, successful Promise or Observable) than it will close the dialog  
+  If value is `falsy` (false, rejected Promise or failed Observable) it will trigger alert style and not close the dialog.
+- without return value  
+  Has no direct effect on dialog. Can be used to trigger some arbitrary functionality (e.g. copy values to clipboard)
 
 ## API
 

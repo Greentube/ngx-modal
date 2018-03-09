@@ -6,7 +6,8 @@ import { Component, ComponentRef } from '@angular/core';
   template: `
     <p>This component is custom.</p>
     <p>This came from parent: <b>{{parentInfo}}</b></p>
-  `
+  `,
+  styles: [':host { background: lightblue; display: block; padding: 5px } ']
 })
 export class CustomModalComponent implements IModalDialog {
   parentInfo: string;

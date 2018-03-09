@@ -12,7 +12,7 @@ export class AppComponent {
 
   openSimpleModal() {
     this.modalDialogService.openDialog(this.viewContainer, {
-      title: 'Simple',
+      title: 'Simple dialog',
       childComponent: SimpleModalComponent,
       settings: {
         closeButtonClass: 'close theme-icon-close'
@@ -25,7 +25,7 @@ export class AppComponent {
 
   openSimpleModalWithCallback() {
     this.modalDialogService.openDialog(this.viewContainer, {
-      title: 'Simple',
+      title: 'Dialog with delayed closing',
       childComponent: SimpleModalComponent,
       data: {
         text: 'Some text content. It will close after 1 sec.'
@@ -43,17 +43,18 @@ export class AppComponent {
 
   openPromptModal() {
     this.modalDialogService.openDialog(this.viewContainer, {
-      title: 'Simple',
+      title: 'Dialog with action buttons',
       childComponent: SimpleModalComponent,
       data: {
-        text: 'Not so simple modal dialog. Do you agree?\n(It will close on Fine but fail on close)'
+        text: 'Not so simple modal dialog. Do you agree?\n(It will close on Yes, fail on No and do nothing on Site effect)'
       },
       settings: {
         closeButtonClass: 'close theme-icon-close'
       },
       actionButtons: [
         {
-          text: 'Im fine, thanks',
+          text: 'Yes, close me!',
+          buttonClass: 'btn btn-success',
           onAction: () => new Promise((resolve: any) => {
             setTimeout(() => {
               resolve();
@@ -61,7 +62,15 @@ export class AppComponent {
           })
         },
         {
-          text: 'Brake, please',
+          text: 'Side effect',
+          buttonClass: 'btn btn-info',
+          onAction: () => {
+            alert('As you can see, I will not close this dialog');
+          }
+        },
+        {
+          text: 'No, fail closing!',
+          buttonClass: 'btn btn-danger',
           onAction: () => new Promise((resolve: any, reject: any) => {
             setTimeout(() => {
               reject();
@@ -74,7 +83,7 @@ export class AppComponent {
 
   openCustomModal() {
     this.modalDialogService.openDialog(this.viewContainer, {
-      title: 'Custom',
+      title: 'Custom child component',
       childComponent: CustomModalComponent,
       settings: {
         closeButtonClass: 'close theme-icon-close'
