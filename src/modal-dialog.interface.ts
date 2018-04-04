@@ -13,7 +13,7 @@ export interface IModalDialogOptions<T> {
   actionButtons: IModalDialogButton[];
   data: T;
   settings: Partial<IModalDialogSettings>;
-  closeDialogSubject: Subject<void>;
+  closeDialogSubject: Subject<any>;
 }
 
 export type ModalDialogOnAction = () => Promise<any> | Observable<any> | boolean | void;
