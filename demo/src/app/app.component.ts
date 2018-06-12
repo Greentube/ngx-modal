@@ -91,4 +91,35 @@ export class AppComponent {
       data: 'Hey, we are data passed from the parent!'
     });
   }
+
+  openMultipleModal() {
+    this.modalDialogService.openDialog(this.viewContainer, {
+      title: 'Dialog 1',
+      childComponent: SimpleModalComponent,
+      settings: { closeButtonClass: 'close theme-icon-close' },
+      placeOnTop: true,
+      data: { text: `
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.` }
+    });
+    this.modalDialogService.openDialog(this.viewContainer, {
+      title: 'Dialog 2',
+      childComponent: SimpleModalComponent,
+      settings: { closeButtonClass: 'close theme-icon-close' },
+      placeOnTop: true,
+      data: { text: `
+        Lorem ipsum is placeholder text commonly used in the graphic, print,
+        and publishing industries for previewing layouts and visual mockups.` }
+    });
+    this.modalDialogService.openDialog(this.viewContainer, {
+      title: 'Dialog 3',
+      childComponent: SimpleModalComponent,
+      settings: { closeButtonClass: 'close theme-icon-close' },
+      placeOnTop: true,
+      data: { text: 'Some text content' }
+    });
+  }
 }

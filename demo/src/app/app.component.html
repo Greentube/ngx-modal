@@ -6,13 +6,30 @@
     <p>
       Demo showcase of ngx-modal-dialog component
     </p>
-    <div class="row">
+    <div class="row mb-2">
       <div class="col">
         <button class="btn btn-primary" type="button" (click)="openSimpleModal()">Simple modal</button>
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="col">
         <button class="btn btn-warning" type="button" (click)="openSimpleModalWithCallback()">Dialog with delayed closing
         </button>
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="col">
         <button class="btn btn-info" type="button" (click)="openPromptModal()">Dialog with action buttons</button>
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="col">
         <button class="btn btn-success" type="button" (click)="openCustomModal()">Dialog with custom child component</button>
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="col">
+        <button class="btn btn-danger" type="button" (click)="openMultipleModal()">Multiple modal dialogs on top of each other</button>
       </div>
     </div>
   </div>
