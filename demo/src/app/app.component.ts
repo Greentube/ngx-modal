@@ -1,6 +1,7 @@
 import { Component, ViewContainerRef } from '@angular/core';
 import { ModalDialogService, SimpleModalComponent } from 'ngx-modal-dialog';
 import { CustomModalComponent } from './dialogs/custom-modal.component';
+import { DynamicModalComponent } from './dialogs/dynamic-modal.component';
 
 @Component({
   selector: 'app-root',
@@ -89,6 +90,16 @@ export class AppComponent {
         closeButtonClass: 'close theme-icon-close'
       },
       data: 'Hey, we are data passed from the parent!'
+    });
+  }
+
+  openDynamicModal() {
+    this.modalDialogService.openDialog(this.viewContainer, {
+      title: 'Dynamic child component',
+      childComponent: DynamicModalComponent,
+      settings: {
+        closeButtonClass: 'close theme-icon-close'
+      }
     });
   }
 

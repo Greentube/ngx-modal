@@ -11,11 +11,7 @@ export class ModalDialogInstanceService {
    * Closes existing modal dialog
    */
   closeAnyExistingModalDialog() {
-    // tslint:disable-next-line
-    console.log(1);
     while (this.componentRefs.length) {
-      // tslint:disable-next-line
-      console.log(2);
       this.componentRefs[this.componentRefs.length - 1].destroy();
     }
   }
