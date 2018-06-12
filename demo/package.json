@@ -23,7 +23,7 @@
     "@angular/router": "^5.2.0",
     "bootstrap": "^4.0.0",
     "core-js": "^2.4.1",
-    "ngx-modal-dialog": "2.1.1",
+    "ngx-modal-dialog": "2.1.2",
     "rxjs": "^5.5.6",
     "zone.js": "^0.8.19"
   },
