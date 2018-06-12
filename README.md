@@ -126,6 +126,7 @@ interface IModalDialogOptions<T> {
   onClose: ModalDialogOnAction;
   actionButtons: IModalDialogButton[];
   data: T;
+  placeOnTop: boolean;
   settings: IModalDialogSettings;
   closeDialogSubject: Subject<void>;
 }
@@ -148,6 +149,10 @@ Action buttons close the modal dialog upon successful operation.
 
 - data: `T`  
 Arbitrary data that will be passed to child component via `dialogInit` method.
+
+- placeOnTop: `boolean`
+Flag stating whether opening the modal dialog should close all the other modal dialogs, or modal should be rendered on top of existing ones.
+
 
 - settings: `IModalDialogSettings`  
 Additional settings for granular configuration of modal dialog. See [IModalDialogSettings](#imodaldialogsettings).

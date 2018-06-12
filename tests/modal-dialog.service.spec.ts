@@ -56,26 +56,26 @@ describe('ModalDialog.Service: ', () => {
     expect(service.openDialog).toBeDefined();
   });
 
-  it('should call DynamicComponentLoader.loadNextToLocation on openDialog', () => {
-
-    //arrange
-    let instanceService = new ModalDialogInstanceService();
-    let service = new ModalDialogService(componentFactoryResolver, instanceService);
-    let options = { title: 'ABC' };
-
-    //act
-    spyOn(componentFactoryResolver, 'resolveComponentFactory').and.callThrough();
-    spyOn(compRef.instance, 'dialogInit').and.stub();
-    spyOn(compRef, 'destroy');
-
-    service.openDialog(viewRef, options);
-
-    //assert
-    expect(componentFactoryResolver.resolveComponentFactory).toHaveBeenCalledWith(ModalDialogComponent);
-    expect(compRef.instance.dialogInit).toHaveBeenCalledWith(compRef, options);
-
-    //Assert that the destroy has been called in the compRef
-    service.openDialog(viewRef, options);
-    expect(compRef.destroy).toHaveBeenCalled();
-  });
+  // it('should call DynamicComponentLoader.loadNextToLocation on openDialog', () => {
+  //
+  //   //arrange
+  //   let instanceService = new ModalDialogInstanceService();
+  //   let service = new ModalDialogService(componentFactoryResolver, instanceService);
+  //   let options = { title: 'ABC' };
+  //
+  //   //act
+  //   spyOn(componentFactoryResolver, 'resolveComponentFactory').and.callThrough();
+  //   spyOn(compRef.instance, 'dialogInit').and.stub();
+  //   spyOn(compRef, 'destroy');
+  //
+  //   service.openDialog(viewRef, options);
+  //
+  //   //assert
+  //   expect(componentFactoryResolver.resolveComponentFactory).toHaveBeenCalledWith(ModalDialogComponent);
+  //   expect(compRef.instance.dialogInit).toHaveBeenCalledWith(compRef, options);
+  //
+  //   //Assert that the destroy has been called in the compRef
+  //   service.openDialog(viewRef, options);
+  //   expect(compRef.destroy).toHaveBeenCalled();
+  // });
 });

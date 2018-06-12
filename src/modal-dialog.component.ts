@@ -60,8 +60,8 @@ import { delay } from 'rxjs/operators';
       }
   `],
   template: `
-    <div *ngIf="settings.overlayClass" [ngClass]="[settings.overlayClass, animateOverlayClass]"
-         (click)="(!actionButtons || !actionButtons.length) && close()"></div>
+    <div *ngIf="settings.overlayClass && showOverlay" [ngClass]="[settings.overlayClass, animateOverlayClass]"
+         (click)="close()"></div> 
     <div [ngClass]="[settings.modalClass, animateModalClass]">
       <div [ngClass]="settings.modalDialogClass">
         <div [ngClass]="[ showAlert ? settings.alertClass : '', settings.contentClass]">
@@ -116,6 +116,8 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy, OnInit {
   public showAlert: boolean = false;
   public animateOverlayClass = '';
   public animateModalClass = '';
+
+  public showOverlay = false;
 
   private _inProgress = false;
   private _alertTimeout: number;

@@ -19,7 +19,9 @@ export class ModalDialogService {
    * @param  {IModalDialogOptions} options?
    */
   openDialog(target: ViewContainerRef, options: Partial<IModalDialogOptions<any>> = {}) {
-    this.modalDialogInstanceService.closeAnyExistingModalDialog();
+    if (!options.placeOnTop) {
+      this.modalDialogInstanceService.closeAnyExistingModalDialog();
+    }
 
     const factory = this.componentFactoryResolver.resolveComponentFactory(ModalDialogComponent);
     const componentRef = target.createComponent(factory);

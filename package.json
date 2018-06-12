@@ -1,6 +1,6 @@
 {
   "name": "ngx-modal-dialog",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "Dynamic modal dialog for Angular",
   "scripts": {
     "test": "karma start",

@@ -12,6 +12,7 @@ export interface IModalDialogOptions<T> {
   onClose: () => Promise<any> | Observable<any> | boolean;
   actionButtons: IModalDialogButton[];
   data: T;
+  placeOnTop: boolean;
   settings: Partial<IModalDialogSettings>;
   closeDialogSubject: Subject<void>;
 }
