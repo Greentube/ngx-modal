@@ -75,7 +75,7 @@ MIT
 MIT
 MIT
 
-ngx-modal-dialog@2.0.1
+ngx-modal-dialog@2.1.0
 MIT
 MIT License
 
