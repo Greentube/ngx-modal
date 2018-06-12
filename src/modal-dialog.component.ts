@@ -4,7 +4,8 @@
   ComponentFactoryResolver,
   ViewContainerRef,
   ViewChild,
-  OnDestroy, OnInit
+  OnDestroy, OnInit,
+  HostListener
 } from '@angular/core';
 import {
   IModalDialog,
@@ -60,8 +61,7 @@ import { delay } from 'rxjs/operators';
       }
   `],
   template: `
-    <div *ngIf="settings.overlayClass && showOverlay" [ngClass]="[settings.overlayClass, animateOverlayClass]"
-         (click)="close()"></div> 
+    <div *ngIf="settings.overlayClass && showOverlay" [ngClass]="[settings.overlayClass, animateOverlayClass]"></div> 
     <div [ngClass]="[settings.modalClass, animateModalClass]">
       <div [ngClass]="settings.modalDialogClass">
         <div [ngClass]="[ showAlert ? settings.alertClass : '', settings.contentClass]">
@@ -129,6 +129,11 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy, OnInit {
    * @param componentFactoryResolver
    */
   constructor(private componentFactoryResolver: ComponentFactoryResolver) {
+  }
+
+  @HostListener('click', ['$event'])
+  onClick(): void {
+    this.close();
   }
 
   /**
