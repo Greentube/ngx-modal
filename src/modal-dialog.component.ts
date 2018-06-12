@@ -5,7 +5,7 @@
   ViewContainerRef,
   ViewChild,
   OnDestroy, OnInit,
-  HostListener
+  HostListener, ElementRef
 } from '@angular/core';
 import {
   IModalDialog,
@@ -13,11 +13,8 @@ import {
   IModalDialogButton,
   IModalDialogSettings, ModalDialogOnAction
 } from './modal-dialog.interface';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { fromPromise } from 'rxjs/observable/fromPromise';
-import { of } from 'rxjs/observable/of';
-import { delay } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { from } from 'rxjs/observable/from';
 
 /**
  * Modal dialog component
@@ -62,7 +59,7 @@ import { delay } from 'rxjs/operators';
   `],
   template: `
     <div *ngIf="settings.overlayClass && showOverlay" [ngClass]="[settings.overlayClass, animateOverlayClass]"></div> 
-    <div [ngClass]="[settings.modalClass, animateModalClass]">
+    <div [ngClass]="[settings.modalClass, animateModalClass]" #dialog>
       <div [ngClass]="settings.modalDialogClass">
         <div [ngClass]="[ showAlert ? settings.alertClass : '', settings.contentClass]">
           <div [ngClass]="settings.headerClass">
@@ -86,8 +83,8 @@ import { delay } from 'rxjs/operators';
   `
 })
 export class ModalDialogComponent implements IModalDialog, OnDestroy, OnInit {
-  @ViewChild('modalDialogBody', { read: ViewContainerRef })
-  public dynamicComponentTarget: ViewContainerRef;
+  @ViewChild('modalDialogBody', { read: ViewContainerRef }) public dynamicComponentTarget: ViewContainerRef;
+  @ViewChild('dialog') private dialogElement: ElementRef;
   public reference: ComponentRef<IModalDialog>;
 
   /** Modal dialog style settings */
@@ -126,13 +123,18 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy, OnInit {
 
   /**
    * CTOR
+   * @param _element
    * @param componentFactoryResolver
    */
-  constructor(private componentFactoryResolver: ComponentFactoryResolver) {
+  constructor(protected _element: ElementRef,
+              private componentFactoryResolver: ComponentFactoryResolver) {
   }
 
   @HostListener('click', ['$event'])
-  onClick(): void {
+  onClick(event: any): void {
+    if (event.target !== this.dialogElement.nativeElement) {
+      return;
+    }
     this.close();
   }
 
@@ -168,10 +170,10 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy, OnInit {
 
   ngOnInit() {
     // a trick to defer css animations
-    of(void 0).pipe(delay(0)).subscribe(() => {
+    setTimeout(() => {
       this.animateOverlayClass = this.settings.overlayAnimationTriggerClass;
       this.animateModalClass = this.settings.modalAnimationTriggerClass;
-    });
+    }, 0);
   }
 
   /**
@@ -261,10 +263,10 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy, OnInit {
       }
       return this._triggerAlert();
     }
-    if (response instanceof Promise) {
-      response = fromPromise(<Promise<any>>response);
+    if (this.isPromise(response)) {
+      response = from(response);
     }
-    if (response instanceof Observable) {
+    if (this.isObservable(response)) {
       response.subscribe(() => {
         this._finalizeAndDestroy();
       }, () => {
@@ -290,5 +292,13 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy, OnInit {
         this._alertTimeout = null;
       }, this.settings.alertDuration);
     }
+  }
+
+  private isPromise<T>(value: any | Promise<T>): value is Promise<T> {
+    return value && typeof (<any>value).subscribe !== 'function' && typeof (value as any).then === 'function';
+  }
+
+  private isObservable<T>(value: any | Observable<T>): value is Observable<T> {
+    return value && typeof (<any>value).subscribe === 'function';
   }
 }

@@ -5,10 +5,8 @@ import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/t
 import { ModalDialogComponent } from '../src/modal-dialog.component';
 import { IModalDialog, IModalDialogOptions } from '../src/modal-dialog.interface';
 import { CommonModule } from '@angular/common';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/toPromise';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
+import { of } from 'rxjs/observable/of';
 
 let fixture: ComponentFixture<ModalDialogComponent>;
 
@@ -64,9 +62,13 @@ describe('ModalDialog.Component:', () => {
       })
     };
     actionButtons = [
-      { text: 'abc', onAction: () => Observable.of(true).toPromise() },
+      { text: 'abc', onAction: () => {
+          return new Promise<string>((resolve: any) => {
+            resolve();
+          });
+        } },
       { text: 'def', onAction: () => true },
-      { text: 'hgi', onAction: () => Observable.of(true) }
+      { text: 'hgi', onAction: () => of(true) }
     ];
   });
 
