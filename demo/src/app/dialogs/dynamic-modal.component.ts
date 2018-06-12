@@ -4,10 +4,10 @@ import { Component, ComponentRef } from '@angular/core';
 @Component({
   selector: 'app-dynamic-modal',
   template: `
-    <p>This component is custom.</p>
-    <p>This came from parent: /p>
+    <p>This component has dynamic buttons</p>
+    <p>You can add and change action buttons "on fly"</p>
   `,
-  styles: [':host { background: lightblue; display: block; padding: 5px } ']
+  styles: [':host { border: 1px solid lightgray; display: block; padding: 5px } ']
 })
 export class DynamicModalComponent implements IModalDialog {
   private internalActionButtons = [];
@@ -17,7 +17,7 @@ export class DynamicModalComponent implements IModalDialog {
 
     this.internalActionButtons.push({
       text: 'Add new button',
-      buttonClass: 'btn',
+      buttonClass: 'btn btn-info',
       onAction: () => this.addNewActionButton()
     });
 
@@ -31,7 +31,7 @@ export class DynamicModalComponent implements IModalDialog {
   addNewActionButton() {
     this.internalActionButtons.splice(1, 0, {
       text: 'Rename close button',
-      buttonClass: 'btn',
+      buttonClass: 'btn btn-danger',
       onAction: () => this.renameCloseButton()
     });
   }
