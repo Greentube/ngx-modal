@@ -43,11 +43,11 @@ describe('ModalDialog.Service: ', () => {
 
   //let component;
   let componentFactoryResolver: any;
-  let viewRef: any;
+  // let viewRef: any;
 
   beforeEach(() => {
     componentFactoryResolver = new MockedComponentFactoryResolver();
-    viewRef = new MockedViewContainerRef();
+    // viewRef = new MockedViewContainerRef();
   });
 
   it('should create DataCenterService', () => {

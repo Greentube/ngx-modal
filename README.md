@@ -6,7 +6,7 @@
 Made with Bootstrap 4 styles in mind, but configurable to any framework or custom set of styles.
 Simple demo can be found [here](https://greentube.github.io/ngx-modal/).
 
-> This documentation is for version 2.x.x. If you are migrating from the older version please follow [migration guide](https://github.com/Greentube/ngx-modal/blob/master/MIGRATION_GUIDE.md) to upgrade to the latest version.
+> This documentation is for version 3.x.x and Angular 6+. If you are using older version of Angular (v2-v5) please use [previous version](https://github.com/Greentube/ngx-modal/tree/v2.x.x).
 
 # Table of contents:
 - [Installation](#installation)
