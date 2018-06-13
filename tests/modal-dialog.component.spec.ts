@@ -120,7 +120,7 @@ describe('ModalDialog.Component:', () => {
     component.close();
   });
 
-  it('should call onPromptOk callback on button click and remove component reference after',
+  it('should call onAction callback on button click and remove component reference after',
     fakeAsync(() => {
       component.dialogInit(fixture.componentRef, {
         title: sampleText,
@@ -272,6 +272,7 @@ describe('ModalDialog.Component:', () => {
 
     // act
     dummyComponent.closeMe();
+    tick();
 
     // assert
     expect(dummyComponent.closeMe).toHaveBeenCalled();
@@ -296,6 +297,7 @@ describe('ModalDialog.Component:', () => {
 
     // act
     dummyComponent.closeMe();
+    tick();
 
     // assert
     expect(dummyComponent.closeMe).toHaveBeenCalled();

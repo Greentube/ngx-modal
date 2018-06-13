@@ -1,23 +1,16 @@
 /// <reference path="../node_modules/@types/jasmine/index.d.ts" />
 
 /*
- Temporary fiile for referencing the TypeScript defs for Jasmine + some potentially
+ Temporary file for referencing the TypeScript defs for Jasmine + some potentially
  utils for testing. Will change/adjust this once I find a better way of doing
  */
-
-declare module jasmine {
-  interface Matchers {
-    toHaveText(text: string): boolean;
-    toContainText(text: string): boolean;
-  }
-}
 
 beforeEach(() => {
   jasmine.addMatchers({
 
     toHaveText: function() {
       return {
-        compare: function(actual, expectedText) {
+        compare: function(actual: any, expectedText: any) {
           var actualText = actual.textContent;
           return {
             pass: actualText === expectedText,
@@ -31,7 +24,7 @@ beforeEach(() => {
 
     toContainText: function() {
       return {
-        compare: function(actual, expectedText) {
+        compare: function(actual: any, expectedText: any) {
           var actualText = actual.textContent;
           return {
             pass: actualText.indexOf(expectedText) > -1,
@@ -41,6 +34,20 @@ beforeEach(() => {
           };
         }
       };
-    }
+    },
+
+    toBeAnInstanceOf: function () {
+      return {
+        compare: function (actual: any, expectedClass: any) {
+          const pass = typeof actual === 'object' && actual instanceof expectedClass;
+          return {
+            pass: pass,
+            get message() {
+              return 'Expected ' + actual + ' to be an instance of ' + expectedClass;
+            }
+          };
+        }
+      };
+    },
   });
 });

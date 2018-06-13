@@ -1,8 +1,6 @@
-var testWebpackConfig = require('./webpack.test.js');
-
 module.exports = function (config) {
-
-  var configuration = {
+  const testWebpackConfig = require('./webpack.test.js');
+  const configuration = {
     basePath: '',
 
     client:{
@@ -10,6 +8,7 @@ module.exports = function (config) {
     },
 
     frameworks: ['jasmine'],
+
     plugins: [
       require('karma-jasmine'),
       require('karma-chrome-launcher'),
@@ -20,26 +19,19 @@ module.exports = function (config) {
       require('karma-remap-coverage'),
       require('karma-mocha-reporter')
     ],
-
-    // list of files to exclude
     exclude: [],
 
-    /*
-     * list of files / patterns to load in the browser
-     *
-     * we are building the test environment in ./spec-bundle.js
-     */
-    files: [{pattern: './config/spec-bundle.js', watched: false}],
+    files: [{ pattern: './config/spec-bundle.js', watched: false }],
 
-    preprocessors: {'./config/spec-bundle.js': ['coverage', 'webpack', 'sourcemap']},
+    preprocessors: { './config/spec-bundle.js': ['coverage', 'webpack', 'sourcemap'] },
 
-    // Webpack Config at ./webpack.test.js
     webpack: testWebpackConfig,
 
     webpackMiddleware: {
-      // webpack-dev-middleware configuration
-      // i. e.
-      stats: 'errors-only'
+      logLevel: 'warn',
+      stats: {
+        chunks: false
+      }
     },
 
     reporters: ['mocha', 'coverage', 'remap-coverage'],
@@ -57,37 +49,24 @@ module.exports = function (config) {
     mochaReporter: {
       ignoreSkipped: true
     },
-
-    // Webpack please don't spam the console when running in karma!
     webpackServer: { noInfo: true },
-
-    // web server port
     port: 9876,
-
     colors: true,
-
-    /*
-     * level of logging
-     * possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
-     */
-    logLevel: config.LOG_INFO,
-
+    logLevel: config.LOG_WARN,
     autoWatch: false,
-
     browsers: [ 'ChromeHeadless' ],
 
     customLaunchers: {
-      Chrome_travis_ci: {
-        base: 'Chrome',
-        flags: ['--no-sandbox']
+      ChromeTravisCi: {
+        base: 'ChromeHeadless',
+        flags: ['--no-sandbox', '--disable-gpu']
       }
     },
-
     singleRun: true
   };
 
   if (process.env.TRAVIS) {
-    configuration.browsers = ['Chrome_travis_ci'];
+    configuration.browsers = ['ChromeTravisCi'];
     configuration.reporters = ['mocha'];
   }
 
