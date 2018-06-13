@@ -13,8 +13,7 @@ import {
   IModalDialogButton,
   IModalDialogSettings, ModalDialogOnAction
 } from './modal-dialog.interface';
-import { Observable, Subject } from 'rxjs';
-import { from } from 'rxjs/observable/from';
+import { Observable, Subject, from } from 'rxjs';
 
 /**
  * Modal dialog component

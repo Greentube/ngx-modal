@@ -5,8 +5,7 @@ import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/t
 import { ModalDialogComponent } from '../src/modal-dialog.component';
 import { IModalDialog, IModalDialogOptions } from '../src/modal-dialog.interface';
 import { CommonModule } from '@angular/common';
-import { Subject } from 'rxjs';
-import { of } from 'rxjs/observable/of';
+import { Subject, of } from 'rxjs';
 
 let fixture: ComponentFixture<ModalDialogComponent>;
 
