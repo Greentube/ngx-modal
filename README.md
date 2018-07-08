@@ -4,7 +4,7 @@
 > Dynamic modal dialog for Angular that does not sit on DOM waiting to be triggered, but rather gets injected upon need.
 
 Made with Bootstrap 4 styles in mind, but configurable to any framework or custom set of styles.
-Simple demo can be found [here](https://greentube.github.io/ngx-modal/).
+Simple demo can be found [here](https://greentube.github.io/ngx-modal/demo).
 
 > This documentation is for version 3.x.x and Angular 6+. If you are using older version of Angular (v2-v5) please use [previous version](https://github.com/Greentube/ngx-modal/tree/v2.x.x).
 
