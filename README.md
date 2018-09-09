@@ -96,6 +96,45 @@ Action button can be of two types:
 - without return value  
   Has no direct effect on dialog. Can be used to trigger some arbitrary functionality (e.g. copy values to clipboard)
 
+Custom Header
+1. Create a custom header component that implements `IModalHeaderDialog`.
+
+```ts
+import {Component} from '@angular/core';
+import {IModalHeaderDialog} from '../../../../src/modal-dialog.interface';
+
+@Component({
+  selector: 'app-custom-header-modal',
+  template: `
+    <p>This component is a custom header.</p>
+    <p><strong>Written By: </strong><b>{{data}}</b></p>
+  `
+})
+export class CustomHeaderModalComponent implements IModalHeaderDialog {
+  data: string;
+
+  setData(data: any) {
+    this.data = data;
+  }
+}
+```
+
+2. Inject the `ModalDialogService` where you want to open the dialog passing the headerComponent as a new parameter instead of the title attribute:
+```ts
+constructor(modalService: ModalDialogService, viewRef: ViewContainerRef) { }
+
+openNewDialog() {
+   this.modalDialogService.openDialog(this.viewContainer, {
+    headerComponent: CustomHeaderModalComponent,
+    childComponent: CustomModalComponent,
+    settings: {
+      closeButtonClass: 'close theme-icon-close'
+    },
+    data: 'Yahima Duarte <layahi@gmail.com>'
+  });
+}
+```
+
 ## API
 
 ### ModalDialogService
@@ -122,6 +161,7 @@ Modal heading text
 ```ts
 interface IModalDialogOptions<T> {
   title: string;
+  headerComponent: IModalHeaderDialog;
   childComponent: IModalDialog;
   onClose: ModalDialogOnAction;
   actionButtons: IModalDialogButton[];
@@ -135,6 +175,9 @@ This is generic interface, where `T` is arbitrary type of `data` section.
 #### Interface details:
 - title: `string`  
 Modal heading text
+
+- headerComponent: `any`
+Component type that will be rendered as a header of modal dialog. Component must implement `IModalHeaderDialog` interface.
 
 - childComponent: `any`  
 Component type that will be rendered as a content of modal dialog. Component must implement `IModalDialog` interface.

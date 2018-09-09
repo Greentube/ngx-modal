@@ -11,9 +11,11 @@ import {
   IModalDialog,
   IModalDialogOptions,
   IModalDialogButton,
-  IModalDialogSettings, ModalDialogOnAction
+  IModalDialogSettings, ModalDialogOnAction,
+  IModalHeaderDialog
 } from './modal-dialog.interface';
 import { Observable, Subject, from } from 'rxjs';
+import { AdHeaderDirective } from './modal-dialog.ad-header.directive';
 
 /**
  * Modal dialog component
@@ -55,6 +57,9 @@ import { Observable, Subject, from } from 'rxjs';
         -moz-animation-name: shake;
         animation-name: shake;
       }
+      .modal-title {
+        display: inline-flex;
+      }
   `],
   template: `
     <div *ngIf="settings.overlayClass && showOverlay" [ngClass]="[settings.overlayClass, animateOverlayClass]"></div> 
@@ -62,7 +67,10 @@ import { Observable, Subject, from } from 'rxjs';
       <div [ngClass]="settings.modalDialogClass">
         <div [ngClass]="[ showAlert ? settings.alertClass : '', settings.contentClass]">
           <div [ngClass]="settings.headerClass">
-            <h4 [ngClass]="settings.headerTitleClass">{{title}}</h4>
+            <div [ngClass]="settings.headerTitleClass">
+              <ng-template ad-header></ng-template>
+              <h4 *ngIf="title">{{title}}</h4>
+            </div>
             <button (click)="close()" *ngIf="!actionButtons || !actionButtons.length" type="button"
                     [title]="settings.closeButtonTitle"
                     [ngClass]="settings.closeButtonClass">
@@ -83,6 +91,7 @@ import { Observable, Subject, from } from 'rxjs';
 })
 export class ModalDialogComponent implements IModalDialog, OnDestroy, OnInit {
   @ViewChild('modalDialogBody', { read: ViewContainerRef }) public dynamicComponentTarget: ViewContainerRef;
+  @ViewChild(AdHeaderDirective) adHeader: AdHeaderDirective;
   @ViewChild('dialog') private dialogElement: ElementRef;
   public reference: ComponentRef<IModalDialog>;
 
@@ -147,8 +156,8 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy, OnInit {
 
     // inject component
     if (options.childComponent) {
-      let factory = this.componentFactoryResolver.resolveComponentFactory(options.childComponent);
-      let componentRef = this.dynamicComponentTarget.createComponent(factory) as ComponentRef<IModalDialog>;
+      const factory = this.componentFactoryResolver.resolveComponentFactory(options.childComponent);
+      const componentRef = this.dynamicComponentTarget.createComponent(factory) as ComponentRef<IModalDialog>;
       this._childInstance = componentRef.instance as IModalDialog;
 
       this._closeDialog$ = new Subject<void>();
@@ -163,6 +172,15 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy, OnInit {
         (document.activeElement as HTMLElement).blur() :
         (document.body as HTMLElement).blur();
     }
+    if (options.headerComponent) {
+      const factory = this.componentFactoryResolver.resolveComponentFactory(options.headerComponent);
+
+      const viewContainerRef = this.adHeader.viewContainerRef;
+      viewContainerRef.clear();
+      const componentRef = viewContainerRef.createComponent(factory);
+      (<IModalHeaderDialog>componentRef.instance).setData(options.data);
+    }
+
     // set options
     this._setOptions(options);
   }
