@@ -3,10 +3,11 @@ import { TestBed, ComponentFixture, fakeAsync, tick } from '@angular/core/testin
 import { By } from '@angular/platform-browser';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { ModalDialogComponent } from '../src/modal-dialog.component';
-import {IModalDialog, IModalDialogOptions, IModalHeaderDialog} from '../src/modal-dialog.interface';
+import { IModalDialog, IModalDialogOptions, IModalHeaderDialog } from '../src/modal-dialog.interface';
 import { CommonModule } from '@angular/common';
 import { Subject, of } from 'rxjs';
-import {AdHeaderDirective} from '../src/modal-dialog.ad-header.directive';
+import { AdHeaderDirective } from '../src/modal-dialog.ad-header.directive';
+import { ModalDialogHeaderType } from '../src/modal-dialog.header-type';
 
 let fixture: ComponentFixture<ModalDialogComponent>;
 
@@ -271,6 +272,10 @@ describe('ModalDialog.Component:', () => {
       component.dialogInit(fixture.componentRef, {
           headerComponent: DummyHeaderComponent,
           childComponent: DummyComponent,
+          settings: {
+              closeButtonClass: 'close theme-icon-close',
+              headerType: ModalDialogHeaderType.CUSTOM
+          },
           data: data
       });
 

@@ -17,9 +17,9 @@ import {
     IModalHeaderDialog,
     ModalDialogOnAction
 } from './modal-dialog.interface';
-import {from, Observable, Subject} from 'rxjs';
-import {AdHeaderDirective} from './modal-dialog.ad-header.directive';
-import {ModalDialogHeaderType} from './modal-dialog.header-type';
+import { from, Observable, Subject } from 'rxjs';
+import { AdHeaderDirective } from './modal-dialog.ad-header.directive';
+import { ModalDialogHeaderType } from './modal-dialog.header-type';
 
 /**
  * Modal dialog component
