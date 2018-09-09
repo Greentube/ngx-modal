@@ -1,8 +1,8 @@
 import {Component, ViewContainerRef} from '@angular/core';
-import {ModalDialogService, SimpleModalComponent} from 'ngx-modal-dialog';
 import {CustomModalComponent} from './dialogs/custom-modal.component';
 import {DynamicModalComponent} from './dialogs/dynamic-modal.component';
 import {CustomHeaderModalComponent} from './dialogs/custom-header-modal.component';
+import {ModalDialogHeaderType, ModalDialogService, SimpleModalComponent} from 'ngx-modal-dialog';
 
 @Component({
   selector: 'app-root',
@@ -96,13 +96,17 @@ export class AppComponent {
 
   openCustomHeaderModal() {
     this.modalDialogService.openDialog(this.viewContainer, {
-      title: 'Custom child component',
       headerComponent: CustomHeaderModalComponent,
-      childComponent: CustomModalComponent,
+      childComponent: SimpleModalComponent,
       settings: {
-        closeButtonClass: 'close theme-icon-close'
+        closeButtonClass: 'close theme-icon-close',
+        headerType: ModalDialogHeaderType.CUSTOM
       },
-      data: 'Yahima Duarte <layahi@gmail.com>'
+      data: {
+        title: 'Yahima Duarte <layahi@gmail.com>',
+        text: `Lorem ipsum is placeholder text commonly used in the graphic, print,
+        and publishing industries for previewing layouts and visual mockups.`
+      }
     });
   }
 

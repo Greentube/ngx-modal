@@ -1,17 +1,17 @@
 import {Component} from '@angular/core';
-import {IModalHeaderDialog} from '../../../../src/modal-dialog.interface';
+import {IModalHeaderDialog} from 'ngx-modal-dialog';
 
 @Component({
   selector: 'app-custom-header-modal',
   template: `
-    <p>This component is a custom header.</p>
-    <p>Written By: <b>{{data}}</b></p>
+    <h4>This component is a custom header</h4>
+    <p>Written By: <b>{{title}}</b></p>
   `
 })
 export class CustomHeaderModalComponent implements IModalHeaderDialog {
-  data: string;
+  title: string;
 
   setData(data: any) {
-    this.data = data;
+    this.title = data['title'];
   }
 }

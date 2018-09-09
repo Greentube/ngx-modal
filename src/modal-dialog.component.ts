@@ -1,21 +1,25 @@
 ﻿import {
-  Component,
-  ComponentRef,
-  ComponentFactoryResolver,
-  ViewContainerRef,
-  ViewChild,
-  OnDestroy, OnInit,
-  HostListener, ElementRef
+    Component,
+    ComponentFactoryResolver,
+    ComponentRef,
+    ElementRef,
+    HostListener,
+    OnDestroy,
+    OnInit,
+    ViewChild,
+    ViewContainerRef
 } from '@angular/core';
 import {
-  IModalDialog,
-  IModalDialogOptions,
-  IModalDialogButton,
-  IModalDialogSettings, ModalDialogOnAction,
-  IModalHeaderDialog
+    IModalDialog,
+    IModalDialogButton,
+    IModalDialogOptions,
+    IModalDialogSettings,
+    IModalHeaderDialog,
+    ModalDialogOnAction
 } from './modal-dialog.interface';
-import { Observable, Subject, from } from 'rxjs';
-import { AdHeaderDirective } from './modal-dialog.ad-header.directive';
+import {from, Observable, Subject} from 'rxjs';
+import {AdHeaderDirective} from './modal-dialog.ad-header.directive';
+import {ModalDialogHeaderType} from './modal-dialog.header-type';
 
 /**
  * Modal dialog component
@@ -57,9 +61,6 @@ import { AdHeaderDirective } from './modal-dialog.ad-header.directive';
         -moz-animation-name: shake;
         animation-name: shake;
       }
-      .modal-title {
-        display: inline-flex;
-      }
   `],
   template: `
     <div *ngIf="settings.overlayClass && showOverlay" [ngClass]="[settings.overlayClass, animateOverlayClass]"></div> 
@@ -69,7 +70,7 @@ import { AdHeaderDirective } from './modal-dialog.ad-header.directive';
           <div [ngClass]="settings.headerClass">
             <div [ngClass]="settings.headerTitleClass">
               <ng-template ad-header></ng-template>
-              <h4 *ngIf="title">{{title}}</h4>
+              <h4 *ngIf="settings.headerType === 1">{{title}}</h4>
             </div>
             <button (click)="close()" *ngIf="!actionButtons || !actionButtons.length" type="button"
                     [title]="settings.closeButtonTitle"
@@ -112,7 +113,8 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy, OnInit {
     alertClass: 'ngx-modal-shake',
     alertDuration: 250,
     notifyWithAlert: true,
-    buttonClass: 'btn btn-primary'
+    buttonClass: 'btn btn-primary',
+    headerType: ModalDialogHeaderType.TITLE
   };
   public actionButtons: IModalDialogButton[];
   public title: string;
@@ -172,7 +174,10 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy, OnInit {
         (document.activeElement as HTMLElement).blur() :
         (document.body as HTMLElement).blur();
     }
-    if (options.headerComponent) {
+    // set options
+    this._setOptions(options);
+
+    if (this.settings.headerType === ModalDialogHeaderType.CUSTOM && options.headerComponent) {
       const factory = this.componentFactoryResolver.resolveComponentFactory(options.headerComponent);
 
       const viewContainerRef = this.adHeader.viewContainerRef;
@@ -180,9 +185,6 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy, OnInit {
       const componentRef = viewContainerRef.createComponent(factory);
       (<IModalHeaderDialog>componentRef.instance).setData(options.data);
     }
-
-    // set options
-    this._setOptions(options);
   }
 
   ngOnInit() {

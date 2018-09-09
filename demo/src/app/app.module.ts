@@ -1,9 +1,9 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
+import { ModalDialogModule } from 'ngx-modal-dialog';
 
 import {AppComponent} from './app.component';
 import {CustomModalComponent} from './dialogs/custom-modal.component';
-import {ModalDialogModule} from 'ngx-modal-dialog';
 import {DynamicModalComponent} from './dialogs/dynamic-modal.component';
 import {CustomHeaderModalComponent} from './dialogs/custom-header-modal.component';
 
