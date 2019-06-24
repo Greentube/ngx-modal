@@ -129,7 +129,7 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy, OnInit {
               private componentFactoryResolver: ComponentFactoryResolver) {
   }
 
-  @HostListener('click', ['$event'])
+  @HostListener('mousedown', ['$event'])
   onClick(event: any): void {
     if (event.target !== this.dialogElement.nativeElement) {
       return;
