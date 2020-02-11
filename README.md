@@ -167,6 +167,7 @@ interface IModalDialogButton {
   text: string;
   buttonClass?: string;
   onAction?: ModalDialogOnAction;
+  disabled?: boolean;
 }
 ```
 #### Interface details:
@@ -177,6 +178,8 @@ Default: `btn btn-primary`
 Class name of button
 - onAction(): `Promise<any> | Observable<any> | boolean`  
 Function to be called on button click. In case of Promise and Observable, modal dialog will not close unless successful resolve happens. In case of boolean, modal dialog will close only if result is `truthful`.
+- disabled: `boolean`  
+Disable the button
 #### ModalDialogOnAction type
 ```ts
 type ModalDialogOnAction = () => Promise<any> | Observable<any> | boolean | void;
