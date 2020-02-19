@@ -1,7 +1,6 @@
 Error.stackTraceLimit = Infinity;
 
-require('core-js/es6');
-require('core-js/es7/reflect');
+require('core-js/features/reflect');
 
 // Typescript emit helpers polyfill
 require('ts-helpers');

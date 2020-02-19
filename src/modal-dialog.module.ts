@@ -18,11 +18,11 @@ export const MODAL_DIALOG_FORROOT_GUARD = new InjectionToken<ModalDialogModule>(
   declarations: [ModalDialogComponent, SimpleModalComponent],
   entryComponents: [ModalDialogComponent, SimpleModalComponent],
   exports: [ModalDialogComponent, SimpleModalComponent],
-  providers: [ModalDialogService]
+  providers: [ModalDialogService, ModalDialogInstanceService]
 })
 export class ModalDialogModule {
 
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<ModalDialogModule> {
     return {
       ngModule: ModalDialogModule,
       providers: [

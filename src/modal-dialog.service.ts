@@ -1,8 +1,9 @@
-import { ComponentFactoryResolver, ViewContainerRef, Inject } from '@angular/core';
+import { ComponentFactoryResolver, ViewContainerRef, Inject, Injectable } from '@angular/core';
 import { ModalDialogComponent } from './modal-dialog.component';
 import { IModalDialogOptions } from './modal-dialog.interface';
 import { ModalDialogInstanceService } from './modal-dialog-instance.service';
 
+@Injectable()
 export class ModalDialogService {
   /**
    * CTOR

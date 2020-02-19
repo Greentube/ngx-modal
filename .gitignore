@@ -17,7 +17,6 @@ coverage/
 !config/*
 !karma.conf.js
 !protractor.conf.js
-!webpack.config.js
 !demo/src/typings.d.ts
 
 #################

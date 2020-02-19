@@ -1,6 +1,7 @@
-import { ComponentRef } from '@angular/core';
+import { ComponentRef, Injectable } from '@angular/core';
 import { ModalDialogComponent } from './modal-dialog.component';
 
+@Injectable()
 export class ModalDialogInstanceService {
   /**
    * Used to make sure there is exactly one instance of Modal Dialog
