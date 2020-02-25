@@ -22,14 +22,14 @@ export const MODAL_DIALOG_FORROOT_GUARD = new InjectionToken<ModalDialogModule>(
 })
 export class ModalDialogModule {
 
-  static forRoot(): ModuleWithProviders<ModalDialogModule> {
+  public static forRoot(): ModuleWithProviders<ModalDialogModule> {
     return {
       ngModule: ModalDialogModule,
       providers: [
         {
           provide: MODAL_DIALOG_FORROOT_GUARD,
           useFactory: provideForRootGuard,
-          deps: [[ModalDialogModule, new Optional(), new SkipSelf()]]
+          deps: [ModalDialogModule, new Optional(), new SkipSelf()]
         },
         ModalDialogInstanceService
       ]

@@ -7,11 +7,11 @@ import { ModalDialogModule } from 'ngx-modal-dialog';
 import { DynamicModalComponent } from './dialogs/dynamic-modal.component';
 
 @NgModule({
-  declarations: [AppComponent, CustomModalComponent, DynamicModalComponent],
   imports: [
     BrowserModule,
     ModalDialogModule.forRoot()
   ],
+  declarations: [AppComponent, CustomModalComponent, DynamicModalComponent],
   entryComponents: [CustomModalComponent, DynamicModalComponent],
   bootstrap: [AppComponent]
 })
