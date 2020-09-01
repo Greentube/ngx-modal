@@ -1,6 +1,6 @@
 {
-  "name": "ngx-modal-dialog",
-  "version": "3.1.0",
+  "name": "@preeco-privacy/ngx-modal-dialog",
+  "version": "3.1.1",
   "description": "Dynamic modal dialog for Angular",
   "scripts": {
     "test": "karma start",
