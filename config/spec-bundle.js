@@ -14,9 +14,6 @@ require('zone.js/dist/jasmine-patch');
 require('zone.js/dist/async-test');
 require('zone.js/dist/fake-async-test');
 
-// RxJS
-require('rxjs/Rx');
-
 let testing = require('@angular/core/testing');
 let browser = require('@angular/platform-browser-dynamic/testing');
 

@@ -3,7 +3,7 @@
     "baseUrl": "./",
     "noImplicitAny": true,
     "outDir": "./bundles/out-tsc",
-    "module": "es2015",
+    "module": "es2020",
     "target": "es5",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -35,6 +35,6 @@
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
     "strictInjectionParameters": true,
-    "enableIvy": false
+    "enableIvy": true
   }
 }

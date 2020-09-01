@@ -10,6 +10,9 @@
   "rules": {
     "class-name": true,
     "curly": true,
+    "deprecation": {
+      "severity": "warning"
+    },
     "forin": true,
     "indent": [ true, "spaces", 2 ],
     "label-position": true,
