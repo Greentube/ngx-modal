@@ -7,7 +7,7 @@ script:
   - cd demo
   - yarn
   - ng build --prod --base-href "https://greentube.github.io/ngx-modal/demo/"
-  - ng deploy --repo=https://GH_TOKEN@github.com/greentube/ngx-modal.git --name="meeroslav" --email=missing.manual@gmail.com
+  - ng deploy --no-silent --repo=https://GH_TOKEN@github.com/greentube/ngx-modal.git --name="meeroslav" --email=missing.manual@gmail.com
 
 notifications:
   email: false
