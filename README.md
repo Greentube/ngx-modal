@@ -1,4 +1,4 @@
-# ngx-modal-dialog
+# ngx modal dialog
 [![Build Status](https://travis-ci.org/Greentube/ngx-modal.svg?branch=master)](https://travis-ci.org/Greentube/ngx-modal)
 [![npm version](https://img.shields.io/npm/v/ngx-modal-dialog.svg)](https://www.npmjs.com/package/ngx-modal-dialog)
 > Dynamic modal dialog for Angular that does not sit on DOM waiting to be triggered, but rather gets injected upon need.
