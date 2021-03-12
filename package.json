@@ -25,6 +25,9 @@
   },
   "homepage": "https://github.com/Greentube/ngx-modal",
   "peerDependencies": {
+    "@angular/common": ">=10.0.0",
+    "@angular/core": ">=10.0.0",
+    "rxjs": ">=6.5.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.1000.8",
