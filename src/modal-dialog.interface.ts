@@ -1,12 +1,18 @@
-﻿import { ComponentRef } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+﻿import {ComponentRef} from '@angular/core';
+import {Observable, Subject} from 'rxjs';
+import {ModalDialogHeaderType} from './modal-dialog.header-type';
 
 export interface IModalDialog {
   dialogInit: (reference: ComponentRef<IModalDialog>, options: Partial<IModalDialogOptions<any>>) => void;
 }
 
+export interface IModalHeaderDialog {
+  setData(data: any): void;
+}
+
 export interface IModalDialogOptions<T> {
   title: string;
+  headerComponent: any;
   childComponent: any;
   onClose: () => Promise<any> | Observable<any> | boolean;
   actionButtons: IModalDialogButton[];
@@ -42,4 +48,5 @@ export interface IModalDialogSettings {
   alertDuration: number;
   buttonClass: string;
   notifyWithAlert: boolean;
+  headerType: ModalDialogHeaderType;
 }

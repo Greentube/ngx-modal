@@ -1,5 +1,5 @@
-import { IModalDialog, IModalDialogOptions } from 'ngx-modal-dialog';
 import { Component, ComponentRef } from '@angular/core';
+import {IModalDialog, IModalDialogOptions} from 'ngx-modal-dialog';
 
 @Component({
   selector: 'app-dynamic-modal',

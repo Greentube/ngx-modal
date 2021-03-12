@@ -1,4 +1,4 @@
-import { Component, ComponentRef } from '@angular/core';
+import { Component, ComponentRef, HostBinding } from '@angular/core';
 import { IModalDialog, IModalDialogOptions } from './modal-dialog.interface';
 
 export interface ISimpleModalDataOptions {
@@ -8,13 +8,10 @@ export interface ISimpleModalDataOptions {
 @Component({
   selector: 'simple-modal-dialog',
   template: ``,
-  styles: [':host { display: block; }'],
-  host: {
-    '[innerHTML]': 'text'
-  }
+  styles: [':host { display: block; }']
 })
 export class SimpleModalComponent implements IModalDialog {
-  text: string;
+    @HostBinding('innerHTML') text: string;
 
   /**
    * Initialize dialog with simple HTML content

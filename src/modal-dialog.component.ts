@@ -1,19 +1,25 @@
 ﻿import {
-  Component,
-  ComponentRef,
-  ComponentFactoryResolver,
-  ViewContainerRef,
-  ViewChild,
-  OnDestroy, OnInit,
-  HostListener, ElementRef
+    Component,
+    ComponentFactoryResolver,
+    ComponentRef,
+    ElementRef,
+    HostListener,
+    OnDestroy,
+    OnInit,
+    ViewChild,
+    ViewContainerRef
 } from '@angular/core';
 import {
-  IModalDialog,
-  IModalDialogOptions,
-  IModalDialogButton,
-  IModalDialogSettings, ModalDialogOnAction
+    IModalDialog,
+    IModalDialogButton,
+    IModalDialogOptions,
+    IModalDialogSettings,
+    IModalHeaderDialog,
+    ModalDialogOnAction
 } from './modal-dialog.interface';
-import { Observable, Subject, from } from 'rxjs';
+import { from, Observable, Subject } from 'rxjs';
+import { AdHeaderDirective } from './modal-dialog.ad-header.directive';
+import { ModalDialogHeaderType } from './modal-dialog.header-type';
 
 /**
  * Modal dialog component
@@ -62,7 +68,10 @@ import { Observable, Subject, from } from 'rxjs';
       <div [ngClass]="settings.modalDialogClass">
         <div [ngClass]="[ showAlert ? settings.alertClass : '', settings.contentClass]">
           <div [ngClass]="settings.headerClass">
-            <h4 [ngClass]="settings.headerTitleClass">{{title}}</h4>
+            <div [ngClass]="settings.headerTitleClass">
+              <ng-template ad-header></ng-template>
+              <h4 *ngIf="settings.headerType === 1">{{title}}</h4>
+            </div>
             <button (click)="close()" *ngIf="!actionButtons || !actionButtons.length" type="button"
                     [title]="settings.closeButtonTitle"
                     [ngClass]="settings.closeButtonClass">
@@ -83,6 +92,7 @@ import { Observable, Subject, from } from 'rxjs';
 })
 export class ModalDialogComponent implements IModalDialog, OnDestroy, OnInit {
   @ViewChild('modalDialogBody', { read: ViewContainerRef }) public dynamicComponentTarget: ViewContainerRef;
+  @ViewChild(AdHeaderDirective) adHeader: AdHeaderDirective;
   @ViewChild('dialog') private dialogElement: ElementRef;
   public reference: ComponentRef<IModalDialog>;
 
@@ -103,7 +113,8 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy, OnInit {
     alertClass: 'ngx-modal-shake',
     alertDuration: 250,
     notifyWithAlert: true,
-    buttonClass: 'btn btn-primary'
+    buttonClass: 'btn btn-primary',
+    headerType: ModalDialogHeaderType.TITLE
   };
   public actionButtons: IModalDialogButton[];
   public title: string;
@@ -147,8 +158,8 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy, OnInit {
 
     // inject component
     if (options.childComponent) {
-      let factory = this.componentFactoryResolver.resolveComponentFactory(options.childComponent);
-      let componentRef = this.dynamicComponentTarget.createComponent(factory) as ComponentRef<IModalDialog>;
+      const factory = this.componentFactoryResolver.resolveComponentFactory(options.childComponent);
+      const componentRef = this.dynamicComponentTarget.createComponent(factory) as ComponentRef<IModalDialog>;
       this._childInstance = componentRef.instance as IModalDialog;
 
       this._closeDialog$ = new Subject<void>();
@@ -165,6 +176,15 @@ export class ModalDialogComponent implements IModalDialog, OnDestroy, OnInit {
     }
     // set options
     this._setOptions(options);
+
+    if (this.settings.headerType === ModalDialogHeaderType.CUSTOM && options.headerComponent) {
+      const factory = this.componentFactoryResolver.resolveComponentFactory(options.headerComponent);
+
+      const viewContainerRef = this.adHeader.viewContainerRef;
+      viewContainerRef.clear();
+      const componentRef = viewContainerRef.createComponent(factory);
+      (<IModalHeaderDialog>componentRef.instance).setData(options.data);
+    }
   }
 
   ngOnInit() {

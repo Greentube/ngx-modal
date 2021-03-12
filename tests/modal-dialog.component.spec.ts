@@ -3,9 +3,11 @@ import { TestBed, ComponentFixture, fakeAsync, tick } from '@angular/core/testin
 import { By } from '@angular/platform-browser';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { ModalDialogComponent } from '../src/modal-dialog.component';
-import { IModalDialog, IModalDialogOptions } from '../src/modal-dialog.interface';
+import { IModalDialog, IModalDialogOptions, IModalHeaderDialog } from '../src/modal-dialog.interface';
 import { CommonModule } from '@angular/common';
 import { Subject, of } from 'rxjs';
+import { AdHeaderDirective } from '../src/modal-dialog.ad-header.directive';
+import { ModalDialogHeaderType } from '../src/modal-dialog.header-type';
 
 let fixture: ComponentFixture<ModalDialogComponent>;
 
@@ -29,6 +31,18 @@ class DummyComponent implements IModalDialog {
   }
 }
 
+@Component({
+    selector: 'dummy-header',
+    template: `<h1>Hello {{props}}!</h1>`
+})
+class DummyHeaderComponent implements IModalHeaderDialog {
+    props: any;
+
+    setData(data: any) {
+        this.props = data['headerTitle'];
+    }
+}
+
 describe('ModalDialog.Component:', () => {
   let component: ModalDialogComponent;
   let sampleText: string;
@@ -42,10 +56,10 @@ describe('ModalDialog.Component:', () => {
 
     let module = TestBed.configureTestingModule({
       imports: [CommonModule],
-      declarations: [ModalDialogComponent, DummyComponent]
+      declarations: [ModalDialogComponent, DummyComponent, DummyHeaderComponent, AdHeaderDirective]
     });
     module.overrideModule(BrowserDynamicTestingModule, {
-      set: { entryComponents: [DummyComponent] }
+      set: { entryComponents: [DummyComponent, DummyHeaderComponent] }
     });
 
     fixture = module.createComponent(ModalDialogComponent);
@@ -54,7 +68,7 @@ describe('ModalDialog.Component:', () => {
 
   beforeEach(() => {
     sampleText = 'sample text';
-    data = { some: 'data' };
+    data = { some: 'data', headerTitle: 'World' };
     onCloseWrapper = {
       onClose: () => new Promise<string>((resolve: any) => {
         resolve();
@@ -252,6 +266,31 @@ describe('ModalDialog.Component:', () => {
 
     expect(innerComponent).toBeDefined('modal dialog body should be defined');
     expect(innerComponent.innerHTML).toContain(testString);
+  }));
+
+  it('should inject new header and child component', fakeAsync(() => {
+      component.dialogInit(fixture.componentRef, {
+          headerComponent: DummyHeaderComponent,
+          childComponent: DummyComponent,
+          settings: {
+              closeButtonClass: 'close theme-icon-close',
+              headerType: ModalDialogHeaderType.CUSTOM
+          },
+          data: data
+      });
+
+      fixture.detectChanges();
+      // flush async calls
+      tick();
+      fixture.detectChanges();
+
+      const innerComponent = fixture.debugElement.query(By.css('.modal-body')).nativeElement;
+      expect(innerComponent).toBeDefined('modal dialog body should be defined');
+
+      const innerHeaderComponent = fixture.debugElement.query(By.css('.modal-title')).nativeElement;
+      expect(innerHeaderComponent).toBeDefined('modal dialog custom header should be defined');
+      expect(innerHeaderComponent.innerHTML).toContain('Hello World!');
+
   }));
 
   it('should close dialog from child component', fakeAsync(() => {

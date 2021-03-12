@@ -6,6 +6,7 @@ import { ModalDialogInstanceService } from './modal-dialog-instance.service';
 // modules
 import { CommonModule } from '@angular/common';
 import { NgModule, ModuleWithProviders, InjectionToken, SkipSelf, Optional } from '@angular/core';
+import { AdHeaderDirective } from './modal-dialog.ad-header.directive';
 
 /**
  * Guard to make sure we have single initialization of forRoot
@@ -15,7 +16,7 @@ export const MODAL_DIALOG_FORROOT_GUARD = new InjectionToken<ModalDialogModule>(
 
 @NgModule({
   imports: [CommonModule],
-  declarations: [ModalDialogComponent, SimpleModalComponent],
+  declarations: [ModalDialogComponent, SimpleModalComponent, AdHeaderDirective],
   entryComponents: [ModalDialogComponent, SimpleModalComponent],
   exports: [ModalDialogComponent, SimpleModalComponent],
   providers: [ModalDialogService]

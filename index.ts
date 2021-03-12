@@ -3,3 +3,4 @@ export * from './src/modal-dialog.service';
 export * from './src/modal-dialog.component';
 export * from './src/modal-dialog.interface';
 export * from './src/simple-modal.component';
+export * from './src/modal-dialog.header-type';

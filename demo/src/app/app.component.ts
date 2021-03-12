@@ -1,14 +1,16 @@
-import { Component, ViewContainerRef } from '@angular/core';
-import { ModalDialogService, SimpleModalComponent } from 'ngx-modal-dialog';
-import { CustomModalComponent } from './dialogs/custom-modal.component';
-import { DynamicModalComponent } from './dialogs/dynamic-modal.component';
+import {Component, ViewContainerRef} from '@angular/core';
+import {CustomModalComponent} from './dialogs/custom-modal.component';
+import {DynamicModalComponent} from './dialogs/dynamic-modal.component';
+import {CustomHeaderModalComponent} from './dialogs/custom-header-modal.component';
+import {ModalDialogHeaderType, ModalDialogService, SimpleModalComponent} from 'ngx-modal-dialog';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html'
 })
 export class AppComponent {
-  constructor(private modalDialogService: ModalDialogService, private viewContainer: ViewContainerRef) {}
+  constructor(private modalDialogService: ModalDialogService, private viewContainer: ViewContainerRef) {
+  }
 
   openSimpleModal() {
     this.modalDialogService.openDialog(this.viewContainer, {
@@ -92,6 +94,22 @@ export class AppComponent {
     });
   }
 
+  openCustomHeaderModal() {
+    this.modalDialogService.openDialog(this.viewContainer, {
+      headerComponent: CustomHeaderModalComponent,
+      childComponent: SimpleModalComponent,
+      settings: {
+        closeButtonClass: 'close theme-icon-close',
+        headerType: ModalDialogHeaderType.CUSTOM
+      },
+      data: {
+        title: 'Yahima Duarte <layahi@gmail.com>',
+        text: `Lorem ipsum is placeholder text commonly used in the graphic, print,
+        and publishing industries for previewing layouts and visual mockups.`
+      }
+    });
+  }
+
   openDynamicModal() {
     this.modalDialogService.openDialog(this.viewContainer, {
       title: 'Dynamic child component',
@@ -106,30 +124,34 @@ export class AppComponent {
     this.modalDialogService.openDialog(this.viewContainer, {
       title: 'Dialog 1',
       childComponent: SimpleModalComponent,
-      settings: { closeButtonClass: 'close theme-icon-close' },
+      settings: {closeButtonClass: 'close theme-icon-close'},
       placeOnTop: true,
-      data: { text: `
+      data: {
+        text: `
         Lorem ipsum dolor sit amet, consectetur adipiscing elit,
         sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
         Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
         Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.` }
+        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`
+      }
     });
     this.modalDialogService.openDialog(this.viewContainer, {
       title: 'Dialog 2',
       childComponent: SimpleModalComponent,
-      settings: { closeButtonClass: 'close theme-icon-close' },
+      settings: {closeButtonClass: 'close theme-icon-close'},
       placeOnTop: true,
-      data: { text: `
+      data: {
+        text: `
         Lorem ipsum is placeholder text commonly used in the graphic, print,
-        and publishing industries for previewing layouts and visual mockups.` }
+        and publishing industries for previewing layouts and visual mockups.`
+      }
     });
     this.modalDialogService.openDialog(this.viewContainer, {
       title: 'Dialog 3',
       childComponent: SimpleModalComponent,
-      settings: { closeButtonClass: 'close theme-icon-close' },
+      settings: {closeButtonClass: 'close theme-icon-close'},
       placeOnTop: true,
-      data: { text: 'Some text content' }
+      data: {text: 'Some text content'}
     });
   }
 }

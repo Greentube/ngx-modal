@@ -96,6 +96,50 @@ Action button can be of two types:
 - without return value  
   Has no direct effect on dialog. Can be used to trigger some arbitrary functionality (e.g. copy values to clipboard)
 
+### Custom Header
+1. Create a custom header component that implements `IModalHeaderDialog`.
+
+```ts
+import {Component} from '@angular/core';
+import {IModalHeaderDialog} from 'ngx-modal-dialog';
+
+@Component({
+  selector: 'app-custom-header-modal',
+  template: `
+    <h4>This component is a custom header</h4>
+    <p>Written By: <b>{{title}}</b></p>
+  `
+})
+export class CustomHeaderModalComponent implements IModalHeaderDialog {
+  title: string;
+
+  setData(data: any) {
+    this.title = data['title'];
+  }
+}
+```
+
+2. Inject the `ModalDialogService` where you want to open the dialog passing the headerComponent as a new option parameter instead of the title attribute and change the value of the new parameter headerType to CUSTOM:
+```ts
+constructor(modalService: ModalDialogService, viewRef: ViewContainerRef) { }
+
+openCustomHeaderModal() {
+    this.modalDialogService.openDialog(this.viewContainer, {
+      headerComponent: CustomHeaderModalComponent,
+      childComponent: SimpleModalComponent,
+      settings: {
+        closeButtonClass: 'close theme-icon-close',
+        headerType: ModalDialogHeaderType.CUSTOM
+      },
+      data: {
+        title: 'Yahima Duarte <layahi@gmail.com>',
+        text: `Lorem ipsum is placeholder text commonly used in the graphic, print,
+        and publishing industries for previewing layouts and visual mockups.`
+      }
+    });
+}
+```
+
 ## API
 
 ### ModalDialogService
@@ -122,6 +166,7 @@ Modal heading text
 ```ts
 interface IModalDialogOptions<T> {
   title: string;
+  headerComponent: IModalHeaderDialog;
   childComponent: IModalDialog;
   onClose: ModalDialogOnAction;
   actionButtons: IModalDialogButton[];
@@ -135,6 +180,9 @@ This is generic interface, where `T` is arbitrary type of `data` section.
 #### Interface details:
 - title: `string`  
 Modal heading text
+
+- headerComponent: `any`
+Component type that will be rendered as a header of modal dialog. Component must implement `IModalHeaderDialog` interface.
 
 - childComponent: `any`  
 Component type that will be rendered as a content of modal dialog. Component must implement `IModalDialog` interface.
@@ -212,6 +260,7 @@ interface IModalDialogSettings {
   alertDuration: number;
   buttonClass: string;
   notifyWithAlert: boolean;
+  headerType: ModalDialogHeaderType;
 }
 ```
 
@@ -264,6 +313,8 @@ Style of footer action buttons
 - notifyWithAlert: `number`  
 Default: `true`  
 Define whether modal should alert user when action fails
-
+- headerType: `ModalDialogHeaderType`  
+Default: `TITLE`  
+Define which kind of header would be displayed. If the value is TITLE just the title attribute will be displayed. If the value is CUSTOM and the headerComponent option was defined, the custom header component will be displayed.
 ## License
 Licensed under MIT
