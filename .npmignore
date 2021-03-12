@@ -19,7 +19,6 @@ config
 karma.conf.js
 tsconfig.json
 tslint.json
-webpack.config.js
 package-lock.json
 CODE_OF_CONDUCT.md
 .*

@@ -1,7 +1,9 @@
 {
   "compilerOptions": {
+    "baseUrl": "./",
     "noImplicitAny": true,
-    "module": "es2015",
+    "outDir": "./bundles/out-tsc",
+    "module": "es2020",
     "target": "es5",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -19,7 +21,6 @@
     "lib": ["es7", "es2015", "dom"]
   },
   "files": [
-    "index.ts",
     "./src/modal-dialog.module.ts",
     "./src/modal-dialog.component.ts",
     "./src/modal-dialog.interface.ts",
@@ -31,12 +32,9 @@
     "./tests/modal-dialog-instance.service.spec.ts",
     "./tests/simple-modal.component.spec.ts"
   ],
-  "exclude": [
-    "node_modules",
-    "bundles"
-  ],
   "angularCompilerOptions": {
-    "strictMetadataEmit": true,
-    "skipTemplateCodegen": true
+    "fullTemplateTypeCheck": true,
+    "strictInjectionParameters": true,
+    "enableIvy": true
   }
 }

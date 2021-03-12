@@ -1,0 +1,26 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "projects": {
+    "ngx-modal-dialog": {
+      "projectType": "library",
+      "root": "./",
+      "sourceRoot": "./src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "./tsconfig.lib.json",
+            "project": "./ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "./tsconfig.lib.json"
+            }
+          }
+        }
+      }
+    }},
+  "defaultProject": "ngx-modal-dialog"
+}
