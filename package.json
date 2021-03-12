@@ -1,5 +1,5 @@
 {
-  "name": "@preeco-privacy/ngx-modal-dialog",
+  "name": "ngx-modal-dialog",
   "version": "3.1.1",
   "description": "Dynamic modal dialog for Angular",
   "scripts": {
