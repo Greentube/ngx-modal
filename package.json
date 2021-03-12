@@ -20,10 +20,6 @@
   ],
   "author": "Miroslav Jonas",
   "license": "MIT",
-  "engines": {
-    "node": ">=8.9.1 <9.0.0",
-    "yarn": ">=1.3.2 <2.0.0"
-  },
   "bugs": {
     "url": "https://github.com/Greentube/ngx-modal/issues"
   },
