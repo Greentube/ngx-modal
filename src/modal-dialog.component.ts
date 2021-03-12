@@ -76,6 +76,7 @@ import { from, Observable, Subject } from 'rxjs';
           </div>
           <div [ngClass]="settings.footerClass" *ngIf="actionButtons && actionButtons.length">
             <button *ngFor="let button of actionButtons" (click)="doAction(button.onAction)"
+                    [disabled]="button.disabled"
                     [ngClass]="button.buttonClass || settings.buttonClass">{{button.text}}
             </button>
           </div>
