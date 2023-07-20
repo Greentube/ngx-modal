@@ -14,11 +14,10 @@ import { NgModule, ModuleWithProviders, InjectionToken, SkipSelf, Optional } fro
 export const MODAL_DIALOG_FORROOT_GUARD = new InjectionToken<ModalDialogModule>('MODAL_DIALOG_FORROOT_GUARD');
 
 @NgModule({
-  imports: [CommonModule],
-  declarations: [ModalDialogComponent, SimpleModalComponent],
-  entryComponents: [ModalDialogComponent, SimpleModalComponent],
-  exports: [ModalDialogComponent, SimpleModalComponent],
-  providers: [ModalDialogService, ModalDialogInstanceService]
+    imports: [CommonModule],
+    declarations: [ModalDialogComponent, SimpleModalComponent],
+    exports: [ModalDialogComponent, SimpleModalComponent],
+    providers: [ModalDialogService, ModalDialogInstanceService]
 })
 export class ModalDialogModule {
 

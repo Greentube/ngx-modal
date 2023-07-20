@@ -31,14 +31,15 @@ describe('ModalDialog.Service: ', () => {
   beforeEach(() => {
 
     TestBed.configureTestingModule({
-      providers: [
+    providers: [
         ModalDialogService,
         { provide: ViewContainerRef, useClass: MockedViewContainerRef },
         { provide: ComponentFactoryResolver, useClass: MockedComponentFactoryResolver },
         ModalDialogInstanceService
-      ],
-      declarations: [ModalDialogComponent]
-    });
+    ],
+    declarations: [ModalDialogComponent],
+    teardown: { destroyAfterEach: false }
+});
   });
 
   //let component;
