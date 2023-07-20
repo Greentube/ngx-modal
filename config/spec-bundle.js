@@ -6,7 +6,7 @@ require('core-js/features/reflect');
 require('ts-helpers');
 require('./testing-utils');
 
-require('zone.js/dist/zone');
+require('zone.js');
 require('zone.js/dist/long-stack-trace-zone');
 require('zone.js/dist/proxy.js');
 require('zone.js/dist/sync-test');
