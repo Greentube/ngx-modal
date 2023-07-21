@@ -6,8 +6,9 @@ let fixture: ComponentFixture<SimpleModalComponent>;
 describe('SimpleModal.Component: ', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [SimpleModalComponent]
-    });
+    declarations: [SimpleModalComponent],
+    teardown: { destroyAfterEach: false }
+});
     fixture = TestBed.createComponent(SimpleModalComponent);
   });
 

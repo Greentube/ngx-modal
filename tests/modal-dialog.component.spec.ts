@@ -41,9 +41,10 @@ describe('ModalDialog.Component:', () => {
     jasmine.clock().install();
 
     let module = TestBed.configureTestingModule({
-      imports: [CommonModule],
-      declarations: [ModalDialogComponent, DummyComponent]
-    });
+    imports: [CommonModule],
+    declarations: [ModalDialogComponent, DummyComponent],
+    teardown: { destroyAfterEach: false }
+});
     module.overrideModule(BrowserDynamicTestingModule, {
       set: { entryComponents: [DummyComponent] }
     });

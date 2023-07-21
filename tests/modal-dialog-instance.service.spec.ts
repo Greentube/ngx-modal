@@ -20,11 +20,12 @@ describe('ModalDialogInstance.Service: ', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
+    providers: [
         ModalDialogInstanceService
-      ],
-      declarations: [ModalDialogComponent]
-    });
+    ],
+    declarations: [ModalDialogComponent],
+    teardown: { destroyAfterEach: false }
+});
   });
 
   it('should create ModalDialogInstanceService', () => {
